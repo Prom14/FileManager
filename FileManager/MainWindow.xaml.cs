@@ -23,7 +23,6 @@ namespace FileManager
         public MainWindow()
         {
             InitializeComponent();
-            int farra = 500;
         }
     }
 }
