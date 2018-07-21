@@ -69,7 +69,7 @@ namespace FileManager
             {
                 files.AddRange(Directory.GetFiles(path));
                 /*foreach (var dir in Directory.GetDirectories(path)) 
-                    files.AddRange(EnumFiles(dir));          Тут рекурсия для получения всех файлов из подпапок*/
+                    files.AddRange(EnumFiles(dir));  Тут рекурсия для получения всех файлов из подпапок*/
             }
             catch (UnauthorizedAccessException) { }
             return files.ToArray();
