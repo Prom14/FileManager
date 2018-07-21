@@ -23,6 +23,7 @@ namespace FileManager
         public MainWindow()
         {
             InitializeComponent();
+            int a = 0;
         }
     }
 }
