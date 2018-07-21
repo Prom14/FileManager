@@ -23,7 +23,7 @@ namespace FileManager
         public MainWindow()
         {
             InitializeComponent();
-            int pokkdsakw = 31021312;
+            int a = 0;
         }
     }
 }
