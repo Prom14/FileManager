@@ -29,11 +29,9 @@ namespace FileManager
         {
             InitializeComponent();
             WorkWithFolders work = new WorkWithFolders();
-            
         }
 
         
 
-        
     }
 }

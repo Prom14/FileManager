@@ -10,21 +10,30 @@ namespace FileManager
 {
     class WorkWithFolders
     {
-        List<string> listDirectores = new List<string>();
-
         public string[] GetDirectoriesFromDrivers()
         {
-            DriveInfo[] allDrives = DriveInfo.GetDrives();//Get drivers
+            List<string> listDirectores = new List<string>();
 
-            string[] str1 = null;
-            for (int i = 0; i < allDrives.Length; i++)
+            try
             {
-                try { str1 = Directory.GetDirectories(allDrives[i].ToString());/*Get directories from all drivers*/ }
-                catch { continue; }
-                for (int j = 0; j < str1.Length; j++)
+                DriveInfo[] allDrives = DriveInfo.GetDrives();//Get drivers
+
+                string[] str1 = null;
+                for (int i = 0; i < allDrives.Length; i++)
                 {
-                    listDirectores.Add(str1[j]);//Add this directories to a list
+                    try { str1 = Directory.GetDirectories(allDrives[i].ToString());/*Get directories from all drivers*/ }
+                    catch { continue; }
+                    for (int j = 0; j < str1.Length; j++)
+                    {
+                        //listDirectores.Add(str1[j]);//Add this directories to a list
+                        listDirectores.Insert(j, str1[j]);
+                    }
                 }
+            }
+            catch(Exception)
+            {
+                //Выводим сообщение об ошибке в консоль:
+                //Неудалось получить файлы и каталоги из диска ... .
             }
             return listDirectores.ToArray();
         }
@@ -35,16 +44,16 @@ namespace FileManager
             try
             {
                 str1 = Directory.GetDirectories(path);/*Get directories from path folder*/
-                for (int i = 0; i < str1.Length; i++)
+                /*for (int i = 0; i < str1.Length; i++)
                 {
                     listDirectores.Add(str1[i]);//Add this directories to a list
-                }
+                }*/
                 return str1;
             }
             catch { MessageBox.Show("Не удалось получить информацию по этому пути."); return null; }
         }
 
-        public string[] EnumFiles(string path)
+        public string[] GetFiles(string path)
         {
             List<string> files = new List<string>();
             try
@@ -53,8 +62,122 @@ namespace FileManager
                 /*foreach (var dir in Directory.GetDirectories(path)) 
                     files.AddRange(EnumFiles(dir));  Тут рекурсия для получения всех файлов из подпапок*/
             }
-            catch (UnauthorizedAccessException) { }
+            catch (Exception)
+            {
+                //Выводим сообщение об ошибке в консоль:
+                //Неудалось получить файлы и каталоги из папки ... . Причина: папка пуста или ее не существует.
+            }
             return files.ToArray();
         }
+        public void CreateDir(string path, string dirName)
+        {
+            try
+            {
+                if(!Directory.Exists(path + "\\" + dirName))
+                    Directory.CreateDirectory(path + "\\" + dirName);
+                else
+                {
+                    //Выводим сообщение об ошибке в консоль:
+                    //Папка с таким именем уже существует.
+                }
+            }
+            catch(Exception)
+            {
+                //Выводим сообщение об ошибке в консоль:
+                //Создание папки ... прошло неуспешно. Причина: невалидный путь.
+            }
+        }
+
+        public void DeleteDir(string path, string dirName)
+        {
+            try
+            {
+                Directory.Delete(path + "\\" + dirName, true);
+            }
+            catch(Exception)
+            {
+                //Выводим сообщение об ошибке в консоль:
+                //Удаление папки ... прошло неуспешно. Причина: папка не была найдена.
+            }
+            
+        }
+
+        public void DeleteAllFilesFromDir(string path, string dirName)
+        {
+            try
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(path + "\\" + dirName);
+
+                //Delete all files
+                foreach (FileInfo file in dirInfo.GetFiles())
+                {
+                    file.Delete();
+                }
+            }
+            catch(Exception)
+            {
+                //Выводим сообщение об ошибке в консоль:
+                //Удаление файлов из папки ... прошло неуспешно. Причина: папка не была найдена.
+            }
+
+        }
+
+        public void DeleteAllFoldersFromDir(string path, string dirName)
+        {
+            try
+            {
+                //Delete all directiories
+                string[] str = Directory.GetDirectories(path + "\\" + dirName);
+                for (int i = 0; i < str.Length; i++)
+                {
+                    Directory.Delete(str[i], true);
+                }
+            }
+            catch(Exception)
+            {
+                //Выводим сообщение об ошибке в консоль:
+                //Удаление каталогов из папки ... прошло неуспешно. Причина: папка не была найдена.
+            }
+        }
+
+        public void DeleteAllFilesAndFoldersFromDir(string path, string dirName)
+        {
+            try
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(path + "\\" + dirName);
+
+                //Delete all files
+                foreach (FileInfo file in dirInfo.GetFiles())
+                {
+                    file.Delete();
+                }
+
+                //Delete all directiories
+                string[] str = Directory.GetDirectories(path + "\\" + dirName);
+                for (int i = 0; i < str.Length; i++)
+                {
+                    Directory.Delete(str[i], true);
+                }
+            }
+            catch(Exception)
+            {
+                //Выводим сообщение об ошибке в консоль:
+                //Удаление всех каталогов и файлов из папки ... прошло неуспешно. Причина: папка не была найдена.
+            }
+        }
+
+        public void RenameDirectory(string path, string dirName, string newName)
+        {
+            try
+            {
+                Directory.Move(path + "\\" + dirName, path + "\\" + newName);
+            }
+            catch(Exception)
+            {
+                //Выводим сообщение об ошибке в консоль:
+                //Переименование папки ... прошло неуспешно. Причина: папка не была найдена или введено некорректное название.
+            }
+        }
+
     }
 }
