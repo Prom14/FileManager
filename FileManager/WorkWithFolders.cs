@@ -240,7 +240,6 @@ namespace FileManager
                 }
                 if (CountFiles == 0)
                 {
-                    MessageBox.Show("ehhh");
                     //В папке ... не было найдено ни одного файла с расширением ... .
                 }
             }
