@@ -29,15 +29,6 @@ namespace FileManager
         {
             InitializeComponent();
             WorkWithFolders work = new WorkWithFolders();
-            listBox.ItemsSource = work.GetDirectoriesFromDrivers();
-            listBox1.ItemsSource = work.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory));
-        }
-
-        
-
-        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }
