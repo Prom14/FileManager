@@ -11,6 +11,7 @@ namespace FileManager
     class WorkWithFolders
     {
         List<string> listDirectores = new List<string>();
+
         public string[] GetDirectoriesFromDrivers()
         {
             DriveInfo[] allDrives = DriveInfo.GetDrives();//Get drivers

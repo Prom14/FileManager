@@ -5,10 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="299" Margin="307,10,0,0" VerticalAlignment="Top" Width="200"/>
-        <ListBox x:Name="listBox1" HorizontalAlignment="Left" Height="299" Margin="10,10,0,0" VerticalAlignment="Top" Width="224"/>
+        BorderBrush="Black"
+        Title="MainWindow" Height="450" Width="800" Background="#FF1B1B1B" Foreground="Black">
 
+    <Window.Resources>
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border BorderThickness="1" BorderBrush="Black">
+                            <Grid Name="TabPanel">
+                                <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabPanel" Property="Background" Value="#FF1B1B1B" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="TabPanel" Property="Background" Value="#FF1B1B1B" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid ShowGridLines="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <TabControl Grid.Row="0" Grid.Column="0" BorderBrush="#FF1B1B1B" Background="#FF1B1B1B" >
+            <TabItem x:Name="TI_Operation" Header="Операции" Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B">
+
+                <Grid Background="#FF1B1B1B" ShowGridLines="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TabControl TabStripPlacement="Left" Grid.Row="0" Grid.Column="0" BorderBrush="#FF1B1B1B" Background="#FF1B1B1B">
+                        <TabItem Header="Домой"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                            <Grid Background="#FF1B1B15">
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Рабочий стол"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                            <Grid Background="#FF1B1B1B"/>
+                        </TabItem>
+                        <TabItem Header="Диски"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                            <Grid Background="#FF1B1B1B"/>
+                        </TabItem>
+                        <TabItem Header="Избранное"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                            <Grid Background="#FF1B1B1B"/>
+                        </TabItem>
+                        <TabItem Header="Коризина"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                            <Grid Background="#FF1B1B1B"/>
+                        </TabItem>
+                        <TabItem Header="Файл.древо"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left"> 
+                            <Grid Background="#FF1B1B1B"/>
+                        </TabItem>
+                    </TabControl>
+
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="TI_Settings" Header="Настройки" BorderBrush="#FF1B1B1B" Background="#FF1B1B1B" Foreground="White">
+                <Grid Background="#FF1B1B1B" Margin="0,0,-4,0"/>
+            </TabItem>
+
+        </TabControl>
     </Grid>
+
 </Window>
