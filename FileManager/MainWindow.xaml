@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:FileManager"
         mc:Ignorable="d"
         BorderBrush="Black"
-        Title="MainWindow" Height="450" Width="800" Background="#fff" Foreground="Black">
+        Title="MainWindow" Height="450" Width="800" Background="#FF1B1B1B" Foreground="Black">
 
     <Window.Resources>
         <Style TargetType="TabItem">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
-                        <Border BorderThickness="1" BorderBrush="#000">
+                        <Border BorderThickness="1" BorderBrush="Black">
                             <Grid Name="TabPanel">
                                 <ContentPresenter x:Name="ContentSite"
                                         VerticalAlignment="Center"
@@ -24,11 +24,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="TabPanel" Property="Background" Value="#fff" />
+                                <Setter TargetName="TabPanel" Property="Background" Value="#FF1B1B1B" />
                                 <Setter Property="FontWeight" Value="Bold" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="False">
-                                <Setter TargetName="TabPanel" Property="Background" Value="#fff" />
+                                <Setter TargetName="TabPanel" Property="Background" Value="#FF1B1B1B" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -45,10 +45,10 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <TabControl Grid.Row="0" Grid.Column="0" BorderBrush="#fff" Background="#000" >
-            <TabItem x:Name="TI_Operation" Header="Операции" Background="#fff" Foreground="#000" BorderBrush="#fff">
+        <TabControl Grid.Row="0" Grid.Column="0" BorderBrush="#FF1B1B1B" Background="#FF1B1B1B" >
+            <TabItem x:Name="TI_Operation" Header="Операции" Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B">
 
-                <Grid Background="#fff" ShowGridLines="True">
+                <Grid Background="#FF1B1B1B" ShowGridLines="True">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"></RowDefinition>
                     </Grid.RowDefinitions>
@@ -56,31 +56,27 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TabControl TabStripPlacement="Left" Grid.Row="0" Grid.Column="0" BorderBrush="#fff" Background="#fff" Margin="0,19,0,0" SelectionChanged="TabControl_SelectionChanged">
-                        <TabItem Header="Домой"  Background="#fff" Foreground="#000" BorderBrush="#000" HorizontalAlignment="Left">
-                            <Grid Background="#fff">
+                    <TabControl TabStripPlacement="Left" Grid.Row="0" Grid.Column="0" BorderBrush="#FF1B1B1B" Background="#FF1B1B1B">
+                        <TabItem Header="Домой"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                            <Grid Background="#FF1B1B15">
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Рабочий стол"  Background="White" Foreground="#000" BorderBrush="#000" HorizontalAlignment="Left">
-                            <Grid Background="#fff"/>
+                        <TabItem Header="Рабочий стол"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                            <Grid Background="#FF1B1B1B"/>
                         </TabItem>
-                        <TabItem Header="Диски"  Background="#fff" Foreground="#000" BorderBrush="#fff" HorizontalAlignment="Left">
-                            <Grid Background="#fff"/>
+                        <TabItem Header="Диски"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                            <Grid Background="#FF1B1B1B"/>
                         </TabItem>
-                        <TabItem Header="Избранное"  Background="#fff" Foreground="#000" BorderBrush="#fff" HorizontalAlignment="Left">
-                            <Grid Background="#fff">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="313*"/>
-                                    <ColumnDefinition Width="364*"/>
-                                </Grid.ColumnDefinitions>
-                            </Grid>
+                        <TabItem Header="Избранное"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                            <Grid Background="#FF1B1B1B"/>
                         </TabItem>
-                        <TabItem Header="Коризина"  Background="#fff" Foreground="#000" BorderBrush="#fff" HorizontalAlignment="Left">
-                            <Grid Background="#fff" Margin="0,31,0,0"/>
+                        <TabItem Header="Коризина"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                            <Grid Background="#FF1B1B1B"/>
                         </TabItem>
-                        <TabItem Header="Файл.древо"  Background="#fff" Foreground="#000" BorderBrush="#fff" HorizontalAlignment="Left">
-                            <Grid Background="#fff"/>
+                        <TabItem Header="Файл.древо"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left"> 
+                            <Grid Background="#FF1B1B1B"/>
                         </TabItem>
+                        <TabItem Header="Файл.древо"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left"/>
                     </TabControl>
 
                 </Grid>
