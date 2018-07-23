@@ -29,9 +29,12 @@ namespace FileManager
         {
             InitializeComponent();
             WorkWithFolders work = new WorkWithFolders();
+            //Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) - путь до рабочего стола, не трогать!
         }
 
-        
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
+        }
     }
 }

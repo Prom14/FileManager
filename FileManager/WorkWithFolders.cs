@@ -179,5 +179,76 @@ namespace FileManager
             }
         }
 
+        public void RenameFile(string path, string dirName, string fileName, string newName, string extension)
+        {
+            /*
+             КАК ВЫЗЫВАТЬ ФУНКЦИЮ:
+                        string extension = str.Substring(str.LastIndexOf('.'));   - тут расщирение файла
+                        work.RenameFile(path, dirName, fileName, newName, extension);
+             */
+            try
+            {
+                File.Move(path + "\\" + dirName + "\\" + fileName, path + "\\" + dirName + "\\" + newName + extension);
+            }
+            catch (Exception)
+            {
+                //Выводим сообщение об ошибке в консоль:
+                //Переименование файла ... по пути ... прошло неуспешно. Причина: файл не был найден или введено некорректное название.
+            }
+        }
+
+        public void DeleteAllFilesWithСertainExtensionFromDir(string path, string dirName, string extension)
+        {
+            try
+            {
+                int CountFiles = 0;
+                DirectoryInfo dirInfo = new DirectoryInfo(path + "\\" + dirName);
+
+                //Delete all files
+                foreach (FileInfo file in dirInfo.GetFiles())
+                {
+                    if(Path.GetExtension(file.Name) == extension)
+                    {
+                        file.Delete();
+                        CountFiles++;
+                    }
+                }
+                if(CountFiles == 0)
+                {
+                    //В папке ... не было найдено ни одного файла с расширением ... .
+                }
+            }
+            catch (Exception)
+            {
+                //Выводим сообщение об ошибке в консоль:
+                //Удаление файлов с расширением ... из папки ... прошло неуспешно. Причина: папка не была найдена.
+            }
+        }
+
+        public void DeleteAllFilesWithСertainExtensionFromDirAndSubForders(string path, string dirName, string extension)
+        {
+            try
+            {
+                int CountFiles = 0;
+                foreach (var file in Directory.EnumerateFiles(path + "\\" + dirName, "*", SearchOption.AllDirectories))
+                {
+                    if (Path.GetExtension(file) == extension)
+                    {
+                        File.Delete(file);
+                        CountFiles++;
+                    }
+                }
+                if (CountFiles == 0)
+                {
+                    //В папке ... не было найдено ни одного файла с расширением ... .
+                }
+            }
+            catch(Exception)
+            {
+                //Выводим сообщение об ошибке в консоль:
+                //Удаление всех файлов с расширением ... из папки ... прошло неуспешно. Причина: папка не была найдена.
+            }
+        }
+
     }
 }
