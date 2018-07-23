@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FileManager"
         mc:Ignorable="d"
         BorderBrush="Black"
         Title="MainWindow" Height="450" Width="800" Background="#FF36393F" Foreground="#FF36393F">
@@ -57,23 +56,23 @@
                     </Grid.ColumnDefinitions>
 
                     <TabControl TabStripPlacement="Left" Grid.Row="0" Grid.Column="0" BorderBrush="#FF36393F" Background="#FF36393F" Foreground="#FF36393F">
-                        <TabItem Header="Домой"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                        <TabItem Header="Домой"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left" IsSelected="True">
                             <Grid Background="#FF36393F">
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Рабочий стол"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                        <TabItem Header="Рабочий стол"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
                             <Grid Background="#FF36393F"/>
                         </TabItem>
-                        <TabItem Header="Диски"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                        <TabItem Header="Диски"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
                             <Grid Background="#FF36393F"/>
                         </TabItem>
-                        <TabItem Header="Избранное"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                        <TabItem Header="Избранное"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
                             <Grid Background="#FF36393F"/>
                         </TabItem>
-                        <TabItem Header="Корзина"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                        <TabItem Header="Корзина"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
                             <Grid Background="#FF36393F"/>
                         </TabItem>
-                        <TabItem Header="Файл.древо"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left"/>
+                        <TabItem Header="Файл.древо"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left"/>
                     </TabControl>
 
                 </Grid>
