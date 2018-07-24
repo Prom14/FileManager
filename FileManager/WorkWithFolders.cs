@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using System.Drawing;
 namespace FileManager
 {
     class WorkWithFolders
@@ -263,6 +263,18 @@ namespace FileManager
                 return null;
             }
         }
-
+        public static Bitmap GetIconFile(string pathToFile)
+        {
+            Bitmap bitmap = default(Bitmap);
+            try
+            {
+                bitmap = new Bitmap(System.Drawing.Icon.ExtractAssociatedIcon(pathToFile).ToBitmap());
+                return bitmap;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }
