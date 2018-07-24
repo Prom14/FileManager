@@ -45,8 +45,8 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <TabControl Grid.Row="0" Grid.Column="0" BorderBrush="#FF1B1B1B" Background="#FF1B1B1B" >
-            <TabItem x:Name="TI_Operation" Header="Операции" Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B">
+        <TabControl Grid.Row="0" Grid.Column="0" BorderBrush="#FF1B1B1B" Background="#FF1B1B1B" Margin="0,19,0,0" >
+            <TabItem x:Name="TI_Operation" Header="Main" Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B">
 
                 <Grid Background="#FF1B1B1B" ShowGridLines="True">
                     <Grid.RowDefinitions>
@@ -58,7 +58,7 @@
 
                     <TabControl TabStripPlacement="Left" Grid.Row="0" Grid.Column="0" BorderBrush="#FF1B1B1B" Background="#FF1B1B1B">
                         <TabItem Header="Домой"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
-                            <Grid Background="#FF1B1B15">
+                            <Grid Background="#FF1B1B15" Margin="6,20,-6,-5">
                             </Grid>
                         </TabItem>
                         <TabItem Header="Рабочий стол"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
@@ -73,7 +73,7 @@
                         <TabItem Header="Коризина"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
                             <Grid Background="#FF1B1B1B"/>
                         </TabItem>
-                        <TabItem Header="Файл.древо"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left"> 
+                        <TabItem Header="Файл.древо"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
                             <Grid Background="#FF1B1B1B"/>
                         </TabItem>
                         <TabItem Header="Файл.древо"  Background="#FF1B1B1B" Foreground="White" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left"/>
@@ -81,11 +81,12 @@
 
                 </Grid>
             </TabItem>
-            <TabItem x:Name="TI_Settings" Header="Настройки" BorderBrush="#fff" Background="#fff" Foreground="#000">
-                <Grid Background="#fff" Margin="0,0,-4,0"/>
-            </TabItem>
 
         </TabControl>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Height="19" SelectedIndex="0" FontSize="11" FontFamily="Segoe UI Symbol" Background="#FF1B1B15" Foreground="#fff" IsReadOnly="True">
+            <ListBoxItem Content="Операции"/>
+            <ListBoxItem Content="Добавить"/>
+        </ComboBox>
     </Grid>
 
 </Window>
