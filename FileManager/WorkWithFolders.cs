@@ -34,6 +34,7 @@ namespace FileManager
             {
                 //Выводим сообщение об ошибке в консоль:
                 //Неудалось получить файлы и каталоги из диска ... .
+                
             }
             return listDirectores.ToArray();
         }
@@ -69,6 +70,7 @@ namespace FileManager
             }
             return files.ToArray();
         }
+
         public void CreateDir(string path, string dirName)
         {
             try
@@ -247,6 +249,18 @@ namespace FileManager
             {
                 //Выводим сообщение об ошибке в консоль:
                 //Удаление всех файлов с расширением ... из папки ... прошло неуспешно. Причина: папка не была найдена.
+            }
+        }
+        
+        public static string GetExtension(string fileName)
+        {
+            try
+            {
+                return Path.GetExtension(fileName);
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 

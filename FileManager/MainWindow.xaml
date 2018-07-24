@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         BorderBrush="Black"
-        Title="MainWindow" Height="450" Width="800" Background="#FF36393F" Foreground="#FF36393F">
+        Title="MainWindow" Height="450" Width="800" Background="#FF36393F" Foreground="#FF36393F" BorderThickness="0">
 
     <Window.Resources>
         <Style TargetType="TabItem">
@@ -56,12 +56,18 @@
                     </Grid.ColumnDefinitions>
 
                     <TabControl TabStripPlacement="Left" Grid.Row="0" Grid.Column="0" BorderBrush="#FF36393F" Background="#FF36393F" Foreground="#FF36393F">
-                        <TabItem Header="Домой"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left" IsSelected="True">
+                        <TabItem Header="Домой"  Background="#FF1B1B1B" Foreground="WHITE" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
                             <Grid Background="#FF36393F">
                             </Grid>
                         </TabItem>
                         <TabItem Header="Рабочий стол"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
-                            <Grid Background="#FF36393F"/>
+                            <Grid Background="#FF36393F">
+                                <ScrollViewer>
+                                    <Grid x:Name="Grid_Desktop" ShowGridLines="False">
+                                        
+                                    </Grid>
+                                </ScrollViewer>
+                            </Grid>
                         </TabItem>
                         <TabItem Header="Диски"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
                             <Grid Background="#FF36393F"/>
@@ -78,7 +84,20 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="TI_Settings" Header="Настройки" BorderBrush="#FF1B1B1B" Background="#FF1B1B1B" Foreground="White">
-                <Grid Background="#FF1B1B1B" Margin="0,0,-4,0"/>
+                <Grid Background="#FF36393F" Margin="0,0,-4,0"/>
+            </TabItem>
+
+            <TabItem Header="Консоль"  BorderBrush="#FF1B1B1B" Background="#FF1B1B1B" Foreground="White">
+                <Grid Background="#FF36393F">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="Console" BorderThickness="0" IsReadOnly="True" Grid.Row="0" Grid.Column="0"  TextWrapping="Wrap" Text="Console v0.0.1 created by RuslanShevcov" Background="#FF222327" Foreground="#FFB4B4B4" SelectionBrush="#FFC3C3C3" BorderBrush="#FF2C3236" SelectionOpacity="0.2" FontSize="10" FontFamily="Microsoft PhagsPa"/>
+                </Grid>
+
             </TabItem>
 
         </TabControl>
