@@ -65,7 +65,7 @@
                             <ColumnDefinition Width="0.2*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <TextBox Margin="11 0 0 0" BorderThickness="0" Text="Path" Grid.Row="1" Grid.Column="0" IsReadOnly="True" SelectionBrush="#FF696D7A" Foreground="#FFC7C7C7" Background="#FF222327" BorderBrush="#FF696D7A" VerticalAlignment="Center" FontSize="14"/>
-                        <ComboBox BorderThickness="0" MaxHeight="19" Grid.Row="1" Grid.Column="1" BorderBrush="#FF222327" Background="#FF222327"/>
+                        <ComboBox  MaxHeight="19" Grid.Row="1" Grid.Column="1"/>
                     </Grid>
 
                     <TabControl TabStripPlacement="Left" Grid.Row="1" Grid.Column="0" BorderBrush="#FF36393F" Background="#FF36393F" Foreground="#FF36393F">
