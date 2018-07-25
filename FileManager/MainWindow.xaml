@@ -73,7 +73,7 @@
                             <Grid Background="#FF36393F">
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Рабочий стол"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                        <TabItem x:Name="Desktop" Header="Рабочий стол"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left" PreviewMouseLeftButtonDown="Desktop_PreviewMouseLeftButtonDown">
                             <Grid Background="#FF36393F">
                                 <ScrollViewer>
                                     <Grid x:Name="Grid_Desktop" ShowGridLines="False">

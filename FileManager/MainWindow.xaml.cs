@@ -17,16 +17,16 @@ namespace FileManager
         private string[] filesInDesktopDirectory;
         private string[] foldersInDesktopDirectory;
         private string[] allFilesInDesktopDirectory;
-        private string path;
-        public string Path
+        private string pathToDesktopDirectory;
+        public string PathToDesktopDirectory
         {
             get
             {
-                return path;
+                return pathToDesktopDirectory;
             }
             set
             {
-                path = value;
+                pathToDesktopDirectory = value;
             }
         }
         public string[] FilesInDesktopDirectory { get => filesInDesktopDirectory; set => filesInDesktopDirectory = value; }
@@ -39,22 +39,18 @@ namespace FileManager
             this.MinHeight = 600;
             this.MinWidth = 600;
             WorkWithFolders work = new WorkWithFolders();
-            Path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            FilesInDesktopDirectory = work.GetFiles(Path.ToString());
-            FoldersInDesktopDirectory = work.GetSubfolders(Path.ToString());
+            PathToDesktopDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            FilesInDesktopDirectory = work.GetFiles(PathToDesktopDirectory.ToString());
+            FoldersInDesktopDirectory = work.GetSubfolders(PathToDesktopDirectory.ToString());
             AllFilesInDesktopDirectory = FoldersInDesktopDirectory.Concat(FilesInDesktopDirectory).ToArray();
-            if(AllFilesInDesktopDirectory.Length != 0)
-             {
-                 CreatedGroupBox();
-             }
 
         }
 
-        private void CreatedGroupBox()
+        private void CreatedFileAndFolderInGroupBox(string path, string[] files,Grid _grid)
         {
-            for (int i = 0; i < AllFilesInDesktopDirectory.Length; i++)
+            for (int i = 0; i < files.Length; i++)
             {
-                Bitmap bt = WorkWithFolders.GetIconFile(AllFilesInDesktopDirectory[i]);
+                Bitmap bt = WorkWithFolders.GetIconFile(files[i]);
                 System.Windows.Controls.Image icon = new System.Windows.Controls.Image();
                 if (bt != null)
                 {
@@ -72,17 +68,17 @@ namespace FileManager
                 Label LB_Attributes = new Label();
                 GroupBox groupBox = new GroupBox();
                 Grid grid = new Grid();
-                LB_Date.Content = File.GetCreationTime(AllFilesInDesktopDirectory[i]);
+                LB_Date.Content = File.GetCreationTime(files[i]);
                 LB_Date.HorizontalAlignment = HorizontalAlignment.Center;
                 LB_Date.VerticalAlignment = VerticalAlignment.Center;
                 LB_Type.HorizontalAlignment = HorizontalAlignment.Center;
                 LB_Type.VerticalAlignment = VerticalAlignment.Center;
                 LB_Attributes.HorizontalAlignment = HorizontalAlignment.Center;
                 LB_Attributes.VerticalAlignment = VerticalAlignment.Center;
-                if (File.Exists(AllFilesInDesktopDirectory[i].ToString()) && WorkWithFolders.GetExtension(AllFilesInDesktopDirectory[i]).ToString() != ".lnk")//.lnk - ярлык
+                if (File.Exists(files[i].ToString()) && WorkWithFolders.GetExtension(files[i]).ToString() != ".lnk")//.lnk - ярлык
                 {
-                    LB_Type.Content = WorkWithFolders.GetExtension(AllFilesInDesktopDirectory[i]).ToString();
-                    if (WorkWithFolders.GetReadOnly(AllFilesInDesktopDirectory[i]))
+                    LB_Type.Content = WorkWithFolders.GetExtension(files[i]).ToString();
+                    if (WorkWithFolders.GetReadOnly(files[i]))
                     {
                         LB_Attributes.Content = "Только чтение";
                     }
@@ -91,10 +87,10 @@ namespace FileManager
                         LB_Attributes.Content = "Чтение и запись";
                     }
                 }
-                else if (File.Exists(AllFilesInDesktopDirectory[i].ToString()) && WorkWithFolders.GetExtension(AllFilesInDesktopDirectory[i]).ToString() == ".lnk")
+                else if (File.Exists(files[i].ToString()) && WorkWithFolders.GetExtension(files[i]).ToString() == ".lnk")
                 {
                     LB_Type.Content = ".exe (Ярлык)";
-                    if (WorkWithFolders.GetReadOnly(AllFilesInDesktopDirectory[i]))
+                    if (WorkWithFolders.GetReadOnly(files[i]))
                     {
                         LB_Attributes.Content = "Только чтение";
                     }
@@ -120,9 +116,9 @@ namespace FileManager
                 LB_Type.Foreground = System.Windows.Media.Brushes.White;
                 LB_Date.Foreground = System.Windows.Media.Brushes.White;
                 LB_Attributes.Foreground = System.Windows.Media.Brushes.White;
-                grid.ShowGridLines = true;
-                Grid_Desktop.RowDefinitions.Add(rewDef);
-                groupBox.Header = AllFilesInDesktopDirectory[i].Remove(0, Path.Length + 1);
+                grid.ShowGridLines = false;
+                _grid.RowDefinitions.Add(rewDef);
+                groupBox.Header = files[i].Remove(0, path.Length + 1);
                 groupBox.MinHeight = 75;
                 groupBox.BorderBrush = System.Windows.Media.Brushes.Black;
                 groupBox.BorderThickness = new Thickness(0.2);
@@ -163,6 +159,14 @@ namespace FileManager
                 {
                     MessageBox.Show(j.ToString());
                 }
+            }
+        }
+
+        private void Desktop_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(Grid_Desktop.Children.Count == 0)
+            {
+                CreatedFileAndFolderInGroupBox(PathToDesktopDirectory, AllFilesInDesktopDirectory, Grid_Desktop);
             }
         }
     }
