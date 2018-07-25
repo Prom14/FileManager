@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Drawing;
 namespace FileManager
@@ -274,6 +271,18 @@ namespace FileManager
             catch (Exception)
             {
                 return null;
+            }
+        }
+        public static bool GetReadOnly(string path)//true - only read , false - not only read
+        {
+            FileAttributes attributes = File.GetAttributes(path);
+            if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
