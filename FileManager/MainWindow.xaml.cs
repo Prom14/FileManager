@@ -29,9 +29,39 @@ namespace FileManager
                 path = value;
             }
         }
-        public string[] FilesInDesktopDirectory { get => filesInDesktopDirectory; set => filesInDesktopDirectory = value; }
-        public string[] FoldersInDesktopDirectory { get => foldersInDesktopDirectory; set => foldersInDesktopDirectory = value; }
-        public string[] AllFilesInDesktopDirectory { get => allFilesInDesktopDirectory; set => allFilesInDesktopDirectory = value; }
+        public string[] FilesInDesktopDirectory
+        {
+            get
+            {
+                return filesInDesktopDirectory;
+            }
+            set
+            {
+                filesInDesktopDirectory = value;
+            }
+        }
+        public string[] FoldersInDesktopDirectory
+        {
+            get
+            {
+                return foldersInDesktopDirectory;
+            }
+            set
+            {
+                foldersInDesktopDirectory = value;
+            }
+        }
+        public string[] AllFilesInDesktopDirectory
+        {
+            get
+            {
+                return allFilesInDesktopDirectory;
+            }
+            set
+            {
+                allFilesInDesktopDirectory = value;
+            }
+        }
 
         public MainWindow()
         {
@@ -164,6 +194,11 @@ namespace FileManager
                     MessageBox.Show(j.ToString());
                 }
             }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
         }
     }
 }

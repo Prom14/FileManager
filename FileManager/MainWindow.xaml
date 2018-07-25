@@ -65,7 +65,70 @@
                             <ColumnDefinition Width="0.2*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <TextBox Margin="11 0 0 0" BorderThickness="0" Text="Path" Grid.Row="1" Grid.Column="0" IsReadOnly="True" SelectionBrush="#FF696D7A" Foreground="#FFC7C7C7" Background="#FF222327" BorderBrush="#FF696D7A" VerticalAlignment="Center" FontSize="14"/>
-                        <ComboBox  MaxHeight="19" Grid.Row="1" Grid.Column="1"/>
+                        <ComboBox  MaxHeight="19" Grid.Row="1" Grid.Column="1" SelectedIndex="0" FontSize="10" SelectionChanged="ComboBox_SelectionChanged">
+                            <ListBoxItem Content="Сортировка"/>
+                            <ListBoxItem Content="По алфавиту"/>
+                            <ListBoxItem Content="По дате создания"/>
+                            <ListBoxItem Content="Сначала файлы"/>
+                            <ListBoxItem Content="Сначала папки"/>
+                            <ListBoxItem Content="Только файлы"/>
+                            <ListBoxItem Content="Только папки"/>
+                            <ListBoxItem Content="Только .exe"/>
+                            <ListBoxItem Content="Только .png/.jpg/.jpeg"/>
+                            <ListBoxItem Content="Только .gif"/>
+                            <ListBoxItem Content="Только.txt"/>
+                            <ListBoxItem Content="Только .zip/7z"/>
+                            <ListBoxItem Content="Только .mp3"/>
+                            <ListBoxItem Content="Только .mp4/.avi"/>
+                            <ListBoxItem Content="Только .ico"/>
+                            <ListBoxItem Content="Только .bmp"/>
+                            <ListBoxItem Content="Только .doc"/>
+                            <ListBoxItem Content="Только .XLS"/>
+                            <ListBoxItem Content="Только .PPT"/>
+                            <ListBoxItem Content="Только .html"/>
+                            <ListBoxItem Content="Только .css"/>
+                            <ListBoxItem Content="Только .js"/>
+                            <ListBoxItem Content="Только .php"/>
+                            <ListBoxItem Content="Только .json"/>
+                            <ListBoxItem Content="Только .XML"/>
+                            <ListBoxItem Content="Только .py"/>
+                            <ListBoxItem Content="Только .vue"/>
+                            <ListBoxItem Content="Только .cmd"/>
+                            <ListBoxItem Content="Только .PIF"/>
+                            <ListBoxItem Content="Только .APPLICATION"/>
+                            <ListBoxItem Content="Только .GADGET"/>
+                            <ListBoxItem Content="Только .MSI"/>
+                            <ListBoxItem Content="Только .MSP"/>
+                            <ListBoxItem Content="Только .COM"/>
+                            <ListBoxItem Content="Только .HTA"/>
+                            <ListBoxItem Content="Только .bat"/>
+                            <ListBoxItem Content="Только .MSC"/>
+                            <ListBoxItem Content="Только .JAR"/>
+                            <ListBoxItem Content="Только .vb/.vbs/.vbe"/>
+                            <ListBoxItem Content="Только .ws/.wsf/.wsc/.wsh"/>
+                            <ListBoxItem Content="Только .ps1/.ps1XML/.ps2/.ps2XML/.psc1/.psc2"/>
+                            <ListBoxItem Content="Только .SCF"/>
+                            <ListBoxItem Content="Только .lnk"/>
+                            <ListBoxItem Content="Только .ink"/>
+                            <ListBoxItem Content="Только .reg"/>
+                            <ListBoxItem Content="Только .pdf/.fb2"/>
+                            <ListBoxItem Content="Только .ico"/>
+                            <ListBoxItem Content="Только .obj"/>
+                            <ListBoxItem Content="Только .max"/>
+                            <ListBoxItem Content="Только .md"/>
+                            <ListBoxItem Content="Только .cfg"/>
+                            <ListBoxItem Content="Только .dem"/>
+                            <ListBoxItem Content="Только .inf"/>
+                            <ListBoxItem Content="Только .tga"/>
+                            <ListBoxItem Content="Только .wad"/>
+                            <ListBoxItem Content="Только .gam"/>
+                            <ListBoxItem Content="Только .lst"/>
+                            <ListBoxItem Content="Только .scr"/>
+                            <ListBoxItem Content="Только .dt"/>
+                            <ListBoxItem Content="Только .nav"/>
+                            <ListBoxItem Content="Только .res"/>
+                            <ListBoxItem Content="Только .bsp"/>
+                        </ComboBox>
                     </Grid>
 
                     <TabControl TabStripPlacement="Left" Grid.Row="1" Grid.Column="0" BorderBrush="#FF36393F" Background="#FF36393F" Foreground="#FF36393F">
