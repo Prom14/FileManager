@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-
+using System.Drawing;
 namespace FileManager
 {
     class WorkWithFolders
@@ -34,6 +31,7 @@ namespace FileManager
             {
                 //Выводим сообщение об ошибке в консоль:
                 //Неудалось получить файлы и каталоги из диска ... .
+                
             }
             return listDirectores.ToArray();
         }
@@ -69,6 +67,7 @@ namespace FileManager
             }
             return files.ToArray();
         }
+
         public void CreateDir(string path, string dirName)
         {
             try
@@ -249,6 +248,42 @@ namespace FileManager
                 //Удаление всех файлов с расширением ... из папки ... прошло неуспешно. Причина: папка не была найдена.
             }
         }
-
+        
+        public static string GetExtension(string fileName)
+        {
+            try
+            {
+                return Path.GetExtension(fileName);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public static Bitmap GetIconFile(string pathToFile)
+        {
+            Bitmap bitmap = default(Bitmap);
+            try
+            {
+                bitmap = new Bitmap(System.Drawing.Icon.ExtractAssociatedIcon(pathToFile).ToBitmap());
+                return bitmap;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public static bool GetReadOnly(string path)//true - only read , false - not only read
+        {
+            FileAttributes attributes = File.GetAttributes(path);
+            if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
