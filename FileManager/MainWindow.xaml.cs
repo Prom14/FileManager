@@ -17,6 +17,7 @@ namespace FileManager
         private string[] filesInDesktopDirectory;
         private string[] foldersInDesktopDirectory;
         private string[] allFilesInDesktopDirectory;
+        private string[] allFoldersAndFilesInFolder;
         private string pathToDesktopDirectory;
         public string PathToDesktopDirectory
         {
@@ -62,6 +63,17 @@ namespace FileManager
                 allFilesInDesktopDirectory = value;
             }
         }
+        public string[] AllFoldersAndFilesInFolder
+        {
+            get
+            {
+                return allFoldersAndFilesInFolder;
+            }
+            set
+            {
+                allFoldersAndFilesInFolder = value;
+            }
+        }
 
         public MainWindow()
         {
@@ -73,6 +85,8 @@ namespace FileManager
             FilesInDesktopDirectory = work.GetFiles(PathToDesktopDirectory.ToString());
             FoldersInDesktopDirectory = work.GetSubfolders(PathToDesktopDirectory.ToString());
             AllFilesInDesktopDirectory = FoldersInDesktopDirectory.Concat(FilesInDesktopDirectory).ToArray();
+            TB_Path.Text = PathToDesktopDirectory;
+            Desktop.IsSelected = true;
 
         }
 
@@ -163,8 +177,8 @@ namespace FileManager
                 }
                 groupBox.Content = grid;
                 icon.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(Open);
-                icon.MouseEnter += (s, e) => Mouse.OverrideCursor = Cursors.Hand;
-                icon.MouseLeave += (s, e) => Mouse.OverrideCursor = Cursors.Arrow;
+                //icon.MouseEnter += (s, e) => Mouse.OverrideCursor = Cursors.Hand;
+                //icon.MouseLeave += (s, e) => Mouse.OverrideCursor = Cursors.Arrow;
                 Grid.SetColumn(icon, 0);
                 Grid.SetColumn(LB_Type, 1);
                 Grid.SetColumn(LB_Date, 2);
@@ -179,15 +193,46 @@ namespace FileManager
         private void Open(object sender, EventArgs e)
         {
             string name = ((System.Windows.Controls.Image)sender).Name.Remove(0,4);
-            if (File.Exists(AllFilesInDesktopDirectory[Convert.ToInt32(name)]))
+            string path = TB_Path.Text;
+            WorkWithFolders work = new WorkWithFolders();
+            if (path == PathToDesktopDirectory)
             {
-                try
+                if (File.Exists(AllFilesInDesktopDirectory[Convert.ToInt32(name)]))
                 {
                     System.Diagnostics.Process.Start(AllFilesInDesktopDirectory[Convert.ToInt32(name)]);
                 }
-                catch (Exception j)
+                else
                 {
-                    MessageBox.Show(j.ToString());
+                    TB_Path.Text = AllFilesInDesktopDirectory[Convert.ToInt32(name)];
+                    Grid_Desktop.Children.Clear();
+                    Grid_Desktop.RowDefinitions.Clear();
+                    Grid_Desktop.ColumnDefinitions.Clear();
+                    string[] files = work.GetFiles(AllFilesInDesktopDirectory[Convert.ToInt32(name)]);
+                    string[] folder = work.GetSubfolders(AllFilesInDesktopDirectory[Convert.ToInt32(name)]);
+                    AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
+                    CreatedFileAndFolderInGroupBox(AllFilesInDesktopDirectory[Convert.ToInt32(name)], AllFoldersAndFilesInFolder, Grid_Desktop);
+                }
+            }
+            else
+            {
+                if (!File.Exists(AllFoldersAndFilesInFolder[Convert.ToInt32(name)]))
+                {
+                    TB_Path.Text = AllFoldersAndFilesInFolder[Convert.ToInt32(name)];
+                    Grid_Desktop.Children.Clear();
+                    Grid_Desktop.RowDefinitions.Clear();
+                    Grid_Desktop.ColumnDefinitions.Clear();
+                    string[] files = work.GetFiles(AllFoldersAndFilesInFolder[Convert.ToInt32(name)]);
+                    string[] folder = work.GetSubfolders(AllFoldersAndFilesInFolder[Convert.ToInt32(name)]);
+                    if (AllFoldersAndFilesInFolder.Length != 0)
+                    {
+                        Array.Clear(AllFoldersAndFilesInFolder, 0, AllFoldersAndFilesInFolder.Length);
+                    }
+                    AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
+                    CreatedFileAndFolderInGroupBox(path, AllFoldersAndFilesInFolder, Grid_Desktop);
+                }
+                else
+                {
+                    System.Diagnostics.Process.Start(AllFoldersAndFilesInFolder[Convert.ToInt32(name)]);
                 }
             }
         }
