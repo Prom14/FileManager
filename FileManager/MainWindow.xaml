@@ -64,7 +64,7 @@
                             <ColumnDefinition Width="0.8*"></ColumnDefinition>
                             <ColumnDefinition Width="0.2*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBox Margin="11 0 0 0" BorderThickness="0" Text="Path" Grid.Row="1" Grid.Column="0" IsReadOnly="True" SelectionBrush="#FF696D7A" Foreground="#FFC7C7C7" Background="#FF222327" BorderBrush="#FF696D7A" VerticalAlignment="Center" FontSize="14"/>
+                        <TextBox x:Name="TB_Path" Margin="11 0 0 0" BorderThickness="0" Text="Path" Grid.Row="1" Grid.Column="0" IsReadOnly="True" SelectionBrush="#FF696D7A" Foreground="#FFC7C7C7" Background="#FF222327" BorderBrush="#FF696D7A" VerticalAlignment="Center" FontSize="14"/>
                         <ComboBox  MaxHeight="19" Grid.Row="1" Grid.Column="1" SelectedIndex="0" FontSize="10" SelectionChanged="ComboBox_SelectionChanged">
                             <ListBoxItem Content="Сортировка"/>
                             <ListBoxItem Content="По алфавиту"/>
@@ -136,7 +136,7 @@
                             <Grid Background="#FF36393F">
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Рабочий стол"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
+                        <TabItem x:Name="Desktop" Header="Рабочий стол"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left" PreviewMouseLeftButtonDown="Desktop_PreviewMouseLeftButtonDown" Margin="0,1,0,-1">
                             <Grid Background="#FF36393F">
                                 <ScrollViewer>
                                     <Grid x:Name="Grid_Desktop" ShowGridLines="False">
