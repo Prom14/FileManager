@@ -19,6 +19,7 @@ namespace FileManager
         private string[] allFilesInDesktopDirectory;
         private string[] allFoldersAndFilesInFolder;
         private string pathToDesktopDirectory;
+        WorkWithFolders work = new WorkWithFolders();
         public string PathToDesktopDirectory
         {
             get
@@ -80,13 +81,11 @@ namespace FileManager
             InitializeComponent();
             this.MinHeight = 600;
             this.MinWidth = 600;
-            WorkWithFolders work = new WorkWithFolders();
             PathToDesktopDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             FilesInDesktopDirectory = work.GetFiles(PathToDesktopDirectory.ToString());
             FoldersInDesktopDirectory = work.GetSubfolders(PathToDesktopDirectory.ToString());
             AllFilesInDesktopDirectory = FoldersInDesktopDirectory.Concat(FilesInDesktopDirectory).ToArray();
             TB_Path.Text = PathToDesktopDirectory;
-            Desktop.IsSelected = true;
 
         }
 
@@ -245,9 +244,141 @@ namespace FileManager
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            string SortType = ((ListBoxItem)CB_Sort.SelectedItem).Content.ToString();
+            string[] help = SortType.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);//Разбиваем строку на элементы массива, учитывая пробел
+            if (help.Length > 1)
+                SortType = help[1];
+            else
+                SortType = help[0];
+            int SelectedIndex = CB_Sort.SelectedIndex;
+            if (SelectedIndex < 7)
+            {
+                if (SelectedIndex == 0)//Выводим все 
+                {
+                    try
+                    {
+                        string CurPath = TB_Path.Text;
+                        string[] files = work.GetFiles(CurPath);
+                        string[] folder = work.GetSubfolders(CurPath);
+                        AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
+                        ClearGrid(Grid_Desktop);
+                        CreatedFileAndFolderInGroupBox(CurPath, AllFoldersAndFilesInFolder, Grid_Desktop);
+                        return;
+                    }
+                    catch (Exception)
+                    {
+                        //Выводим в консоль: 
+                        //Ошибка сортировки! 
+                    }
+                }
+                if (SelectedIndex == 1)//По алфавиту 
+                {
 
+                }
+                if (SelectedIndex == 2)//По дате создания 
+                {
+
+                }
+                if (SelectedIndex == 3)//Сначала файлы 
+                {
+
+                }
+                if (SelectedIndex == 4)//Сначала папки 
+                {
+
+                }
+                if (SelectedIndex == 5)//Только файлы 
+                {
+
+                }
+                if (SelectedIndex == 6)//Только папки 
+                {
+
+                }
+            }
+            else
+            {
+                int countItems = CB_Sort.Items.Count;
+                if (countItems == 0)
+                {
+                    //В консоль - не найдено ни одного элемента 
+                    //LB_emptyListMessage.Visibility = Visibility.Visible; 
+                }
+
+                if (SelectedIndex == countItems - 1)//Без расширения 
+                {
+                    try
+                    {
+                        string currentPath = TB_Path.Text;
+                        string[] NecessaryFiles = { };
+                        string extension = "";
+                        currentPath = TB_Path.Text;
+                        NecessaryFiles = work.GetFilesWithNecessaryExtention(currentPath, extension);
+                        if (NecessaryFiles.Length == 0)
+                        {
+                            //В консоль - не было найдено файлов без расширения! 
+                            return;
+                        }
+                        ClearGrid(Grid_Desktop);
+                        CreatedFileAndFolderInGroupBox(currentPath, NecessaryFiles, Grid_Desktop);
+                    }
+                    catch (Exception)
+                    {
+                        //В консоль - Ошибка сортировки! 
+                    }
+                }
+                else//Только разрешения 
+                {
+
+                    try
+                    {
+                        string[] extensionS = SortType.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);//Разбиваем строку на элементы массива, ориентируюясь на '/' 
+                        string[] NecessaryFiles = { };
+                        string currentPath = "";
+
+                        if (extensionS.Length < 2)//указано 1 расширение 
+                        {
+                            string extension = SortType;
+                            currentPath = TB_Path.Text;
+                            NecessaryFiles = work.GetFilesWithNecessaryExtention(currentPath, extension);
+                            ClearGrid(Grid_Desktop);
+                            if (NecessaryFiles.Length == 0)
+                            {
+                                //В консоль - не было найдено файлов без расширения! 
+                                return;
+                            }
+                            CreatedFileAndFolderInGroupBox(currentPath, NecessaryFiles, Grid_Desktop);
+                        }
+                        else//Указано несколько расширений 
+                        {
+                            for (int i = 0; i < extensionS.Length; i++)
+                            {
+                                string extension = extensionS[i];
+                                currentPath = TB_Path.Text;
+                                string[] FilesWithCurrentExtention = work.GetFilesWithNecessaryExtention(currentPath, extension);
+                                if (FilesWithCurrentExtention.Length == 0)//Ни одного файла с текущим расширением 
+                                    continue;
+                                NecessaryFiles = NecessaryFiles.Concat(FilesWithCurrentExtention).ToArray();
+                            }
+                            ClearGrid(Grid_Desktop);
+                            if (NecessaryFiles.Length == 0)
+                            {
+                                //В консоль - не было найдено файлов без расширения! 
+                                return;
+                            }
+                            CreatedFileAndFolderInGroupBox(currentPath, NecessaryFiles, Grid_Desktop);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //Выводим в консоль: 
+                        //Ошибка сортировки! 
+                        return;
+                    }
+                }
+            }
         }
-        
+
         private void ClearGrid(Grid grid)
         {
             grid.Children.Clear();

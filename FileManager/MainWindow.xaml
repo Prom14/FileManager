@@ -65,7 +65,7 @@
                             <ColumnDefinition Width="0.2*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <TextBox x:Name="TB_Path" Margin="11 0 0 0" BorderThickness="0" Text="Path" Grid.Row="1" Grid.Column="0" IsReadOnly="True" SelectionBrush="#FF696D7A" Foreground="#FFC7C7C7" Background="#FF222327" BorderBrush="#FF696D7A" VerticalAlignment="Center" FontSize="14"/>
-                        <ComboBox  MaxHeight="19" Grid.Row="1" Grid.Column="1" SelectedIndex="0" FontSize="10" SelectionChanged="ComboBox_SelectionChanged">
+                        <ComboBox x:Name="CB_Sort"  MaxHeight="19" Grid.Row="1" Grid.Column="1" SelectedIndex="0" FontSize="10" SelectionChanged="ComboBox_SelectionChanged">
                             <ListBoxItem Content="Сортировка"/>
                             <ListBoxItem Content="По алфавиту"/>
                             <ListBoxItem Content="По дате создания"/>
@@ -76,14 +76,17 @@
                             <ListBoxItem Content="Только .exe"/>
                             <ListBoxItem Content="Только .png/.jpg/.jpeg"/>
                             <ListBoxItem Content="Только .gif"/>
-                            <ListBoxItem Content="Только.txt"/>
-                            <ListBoxItem Content="Только .zip/7z"/>
+                            <ListBoxItem Content="Только .txt"/>
+                            <ListBoxItem Content="Только .zip/.7z"/>
                             <ListBoxItem Content="Только .mp3"/>
                             <ListBoxItem Content="Только .mp4/.avi"/>
                             <ListBoxItem Content="Только .ico"/>
                             <ListBoxItem Content="Только .bmp"/>
-                            <ListBoxItem Content="Только .doc"/>
+                            <ListBoxItem Content="Только .doc/.docx"/>
                             <ListBoxItem Content="Только .XLS"/>
+                            <ListBoxItem Content="Только .xlsx"/>
+                            <ListBoxItem Content="Только .accdb"/>
+                            <ListBoxItem Content="Только .pub"/>
                             <ListBoxItem Content="Только .PPT"/>
                             <ListBoxItem Content="Только .html"/>
                             <ListBoxItem Content="Только .css"/>
@@ -128,6 +131,7 @@
                             <ListBoxItem Content="Только .nav"/>
                             <ListBoxItem Content="Только .res"/>
                             <ListBoxItem Content="Только .bsp"/>
+                            <ListBoxItem Content="Без расширения"/>
                         </ComboBox>
                     </Grid>
 
