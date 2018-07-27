@@ -218,9 +218,7 @@ namespace FileManager
                 if (!File.Exists(AllFoldersAndFilesInFolder[Convert.ToInt32(name)]))
                 {
                     TB_Path.Text = AllFoldersAndFilesInFolder[Convert.ToInt32(name)];
-                    Grid_Desktop.Children.Clear();
-                    Grid_Desktop.RowDefinitions.Clear();
-                    Grid_Desktop.ColumnDefinitions.Clear();
+                    ClearGrid(Grid_Desktop);
                     string[] files = work.GetFiles(AllFoldersAndFilesInFolder[Convert.ToInt32(name)]);
                     string[] folder = work.GetSubfolders(AllFoldersAndFilesInFolder[Convert.ToInt32(name)]);
                     if (AllFoldersAndFilesInFolder.Length != 0)
@@ -248,6 +246,13 @@ namespace FileManager
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+        
+        private void ClearGrid(Grid grid)
+        {
+            grid.Children.Clear();
+            grid.RowDefinitions.Clear();
+            grid.ColumnDefinitions.Clear();
         }
     }
 }
