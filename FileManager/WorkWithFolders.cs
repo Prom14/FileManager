@@ -68,31 +68,6 @@ namespace FileManager
             return files.ToArray();
         }
 
-        public string[] GetFilesWithNecessaryExtention(string path, string necessaryExtention)
-        {
-            string[] files = GetFiles(path);//Получаем файлы по пути path
-
-            List<string> necessaryFiles = new List<string>();//Результатный список
-            
-            for(int i = 0; i < files.Length; i++)
-            {
-                try
-                {
-                    string fileExtention = GetExtension(files[i]);
-                    if (fileExtention.ToLower() == necessaryExtention.ToLower())//Если расширения совпадают
-                    {
-                        necessaryFiles.Add(files[i]);
-                    }
-                }
-                catch(Exception)
-                {
-                    continue;
-                }
-            }
-
-            return necessaryFiles.ToArray();
-        }
-
         public void CreateDir(string path, string dirName)
         {
             try
