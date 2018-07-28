@@ -257,12 +257,12 @@ namespace FileManager
                 {
                     try
                     {
-                        string CurPath = TB_Path.Text;
+                        string CurPath = PathToDesktopDirectory;
                         string[] files = work.GetFiles(CurPath);
                         string[] folder = work.GetSubfolders(CurPath);
-                        AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
+                        AllFilesInDesktopDirectory = folder.Concat(files).ToArray();
                         ClearGrid(Grid_Desktop);
-                        CreatedFileAndFolderInGroupBox(CurPath, AllFoldersAndFilesInFolder, Grid_Desktop);
+                        CreatedFileAndFolderInGroupBox(CurPath, AllFilesInDesktopDirectory, Grid_Desktop);
                         return;
                     }
                     catch (Exception)
@@ -281,19 +281,52 @@ namespace FileManager
                 }
                 if (SelectedIndex == 3)//Сначала файлы 
                 {
-
+                    try
+                    {
+                        string currentPath = TB_Path.Text;
+                        AllFilesInDesktopDirectory = work.GetAllFilesThenAllFolders(currentPath);
+                        ClearGrid(Grid_Desktop);
+                        CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
+                    }
+                    catch(Exception)
+                    {
+                        //В консоль - Ошибка! 
+                    }
                 }
                 if (SelectedIndex == 4)//Сначала папки 
                 {
-
+                    try
+                    {
+                        string currentPath = TB_Path.Text;
+                        AllFilesInDesktopDirectory = work.GetAllFoldersThenAllFiles(currentPath);
+                        ClearGrid(Grid_Desktop);
+                        CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
+                    }
+                    catch (Exception)
+                    {
+                        //В консоль - Ошибка! 
+                    }
                 }
                 if (SelectedIndex == 5)//Только файлы 
                 {
-
+                    try
+                    {
+                        string currentPath = TB_Path.Text;
+                        AllFilesInDesktopDirectory = work.GetFiles(currentPath);
+                        ClearGrid(Grid_Desktop);
+                        CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
+                    }
+                    catch (Exception)
+                    {
+                        //В консоль - Ошибка! 
+                    }
                 }
                 if (SelectedIndex == 6)//Только папки 
                 {
-
+                    string currentPath = TB_Path.Text;
+                    AllFilesInDesktopDirectory = work.GetSubfolders(currentPath);
+                    ClearGrid(Grid_Desktop);
+                    CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
                 }
             }
             else
