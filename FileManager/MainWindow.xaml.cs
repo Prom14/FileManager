@@ -279,13 +279,22 @@ namespace FileManager
                 {
                     try
                     {
-                        string CurPath = PathToDesktopDirectory;
+                        string CurPath = TB_Path.Text;
                         string[] files = work.GetFiles(CurPath);
                         string[] folder = work.GetSubfolders(CurPath);
-                        AllFilesInDesktopDirectory = folder.Concat(files).ToArray();
-                        ClearGrid(Grid_Desktop);
-                        CreatedFileAndFolderInGroupBox(CurPath, AllFilesInDesktopDirectory, Grid_Desktop);
-                        changedFilesInDesktop = null;
+                        if (CurPath == pathToDesktopDirectory)//Если мы на рабочем столе
+                        {
+                            AllFilesInDesktopDirectory = folder.Concat(files).ToArray();
+                            ClearGrid(Grid_Desktop);
+                            CreatedFileAndFolderInGroupBox(CurPath, AllFilesInDesktopDirectory, Grid_Desktop);
+                            changedFilesInDesktop = null;
+                        }
+                        else//Если мы не на рабочем столе
+                        {
+                            AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
+                            ClearGrid(Grid_Desktop);
+                            CreatedFileAndFolderInGroupBox(CurPath, AllFoldersAndFilesInFolder, Grid_Desktop);
+                        }
                         return;
                     }
                     catch (Exception)
@@ -307,9 +316,19 @@ namespace FileManager
                     try
                     {
                         string currentPath = TB_Path.Text;
-                        changedFilesInDesktop = work.GetAllFilesThenAllFolders(currentPath);
-                        ClearGrid(Grid_Desktop);
-                        CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                        if (currentPath == pathToDesktopDirectory)
+                        {
+                            changedFilesInDesktop = work.GetAllFilesThenAllFolders(currentPath);
+                            ClearGrid(Grid_Desktop);
+                            CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                        }
+                        else
+                        {
+                            AllFilesInDesktopDirectory = work.GetAllFilesThenAllFolders(currentPath);
+                            ClearGrid(Grid_Desktop);
+                            CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
+                        }
+                        
                     }
                     catch(Exception)
                     {
@@ -321,9 +340,19 @@ namespace FileManager
                     try
                     {
                         string currentPath = TB_Path.Text;
-                        changedFilesInDesktop = work.GetAllFoldersThenAllFiles(currentPath);
-                        ClearGrid(Grid_Desktop);
-                        CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                        if (currentPath == pathToDesktopDirectory)
+                        {
+                            changedFilesInDesktop = work.GetAllFoldersThenAllFiles(currentPath);
+                            ClearGrid(Grid_Desktop);
+                            CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                        }
+                        else
+                        {
+                            AllFilesInDesktopDirectory = work.GetAllFoldersThenAllFiles(currentPath);
+                            ClearGrid(Grid_Desktop);
+                            CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
+                        }
+
                     }
                     catch (Exception)
                     {
@@ -335,9 +364,19 @@ namespace FileManager
                     try
                     {
                         string currentPath = TB_Path.Text;
-                        changedFilesInDesktop = work.GetFiles(currentPath);
-                        ClearGrid(Grid_Desktop);
-                        CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                        if (currentPath == pathToDesktopDirectory)
+                        {
+                            changedFilesInDesktop = work.GetFiles(currentPath);
+                            ClearGrid(Grid_Desktop);
+                            CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                        }
+                        else
+                        {
+                            AllFilesInDesktopDirectory = work.GetFiles(currentPath);
+                            ClearGrid(Grid_Desktop);
+                            CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
+                        }
+
                     }
                     catch (Exception)
                     {
@@ -347,9 +386,19 @@ namespace FileManager
                 if (SelectedIndex == 6)//Только папки 
                 {
                     string currentPath = TB_Path.Text;
-                    changedFilesInDesktop = work.GetSubfolders(currentPath);
-                    ClearGrid(Grid_Desktop);
-                    CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                    if (currentPath == pathToDesktopDirectory)
+                    {
+                        changedFilesInDesktop = work.GetSubfolders(currentPath);
+                        ClearGrid(Grid_Desktop);
+                        CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                    }
+                    else
+                    {
+                        AllFilesInDesktopDirectory = work.GetSubfolders(currentPath);
+                        ClearGrid(Grid_Desktop);
+                        CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
+                    }
+                    
                 }
             }
             else
@@ -368,15 +417,31 @@ namespace FileManager
                         string currentPath = TB_Path.Text;
                         string[] NecessaryFiles = { };
                         string extension = "";
-                        currentPath = TB_Path.Text;
-                        changedFilesInDesktop = work.GetFilesWithNecessaryExtention(currentPath, extension);
-                        if (NecessaryFiles.Length == 0)
+                        if (currentPath == pathToDesktopDirectory)
                         {
-                            //В консоль - не было найдено файлов без расширения! 
-                            return;
+                            changedFilesInDesktop = work.GetFilesWithNecessaryExtention(currentPath, extension);
+                            if (changedFilesInDesktop.Length == 0)
+                            {
+                                CB_Sort.SelectedIndex = 0;
+                                //В консоль - не было найдено файлов без расширения! 
+                                return;
+                            }
+                            ClearGrid(Grid_Desktop);
+                            CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
                         }
-                        ClearGrid(Grid_Desktop);
-                        CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                        else
+                        {
+                            AllFilesInDesktopDirectory = work.GetFilesWithNecessaryExtention(currentPath, extension);
+                            if (AllFilesInDesktopDirectory.Length == 0)
+                            {
+                                CB_Sort.SelectedIndex = 0;
+                                //В консоль - не было найдено файлов без расширения! 
+                                return;
+                            }
+                            ClearGrid(Grid_Desktop);
+                            CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
+                        }
+                        
                     }
                     catch (Exception)
                     {
@@ -396,14 +461,36 @@ namespace FileManager
                         {
                             string extension = SortType;
                             currentPath = TB_Path.Text;
+                            if (currentPath == pathToDesktopDirectory)
+                            {
+                                changedFilesInDesktop = work.GetFilesWithNecessaryExtention(currentPath, extension);
+                                if (changedFilesInDesktop.Length == 0)
+                                {
+                                    CB_Sort.SelectedIndex = 0;
+                                    //В консоль - не было найдено файлов без расширения! 
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                allFoldersAndFilesInFolder = work.GetFilesWithNecessaryExtention(currentPath, extension);
+                                if (allFoldersAndFilesInFolder.Length == 0)
+                                {
+                                    CB_Sort.SelectedIndex = 0;
+                                    //В консоль - не было найдено файлов без расширения! 
+                                    return;
+                                }
+                            }
                             changedFilesInDesktop = work.GetFilesWithNecessaryExtention(currentPath, extension);
                             ClearGrid(Grid_Desktop);
-                            if (changedFilesInDesktop.Length == 0)
+                            if (currentPath == pathToDesktopDirectory)
                             {
-                                //В консоль - не было найдено файлов без расширения! 
-                                return;
+                                CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
                             }
-                            CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                            else
+                            {
+                                CreatedFileAndFolderInGroupBox(currentPath, allFoldersAndFilesInFolder, Grid_Desktop);
+                            }
                         }
                         else//Указано несколько расширений 
                         {
@@ -419,11 +506,20 @@ namespace FileManager
                             ClearGrid(Grid_Desktop);
                             if (NecessaryFiles.Length == 0)
                             {
+                                CB_Sort.SelectedIndex = 0;
                                 //В консоль - не было найдено файлов без расширения! 
                                 return;
                             }
-                            changedFilesInDesktop = NecessaryFiles;
-                            CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                            if(currentPath == pathToDesktopDirectory)
+                            {
+                                changedFilesInDesktop = NecessaryFiles;
+                                CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                            }
+                            else
+                            {
+                                allFoldersAndFilesInFolder = NecessaryFiles;
+                                CreatedFileAndFolderInGroupBox(currentPath, allFoldersAndFilesInFolder, Grid_Desktop);
+                            }
                         }
                     }
                     catch (Exception)

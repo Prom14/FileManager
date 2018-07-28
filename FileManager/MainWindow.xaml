@@ -77,6 +77,7 @@
                             <ListBoxItem Content="Только .png/.jpg/.jpeg"/>
                             <ListBoxItem Content="Только .gif"/>
                             <ListBoxItem Content="Только .txt"/>
+                            <ListBoxItem Content="Только .lnk"/>
                             <ListBoxItem Content="Только .zip/.7z"/>
                             <ListBoxItem Content="Только .mp3"/>
                             <ListBoxItem Content="Только .mp4/.avi"/>
