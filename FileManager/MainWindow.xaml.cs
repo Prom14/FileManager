@@ -346,14 +346,14 @@ namespace FileManager
                         string[] NecessaryFiles = { };
                         string extension = "";
                         currentPath = TB_Path.Text;
-                        NecessaryFiles = work.GetFilesWithNecessaryExtention(currentPath, extension);
+                        AllFilesInDesktopDirectory = work.GetFilesWithNecessaryExtention(currentPath, extension);
                         if (NecessaryFiles.Length == 0)
                         {
                             //В консоль - не было найдено файлов без расширения! 
                             return;
                         }
                         ClearGrid(Grid_Desktop);
-                        CreatedFileAndFolderInGroupBox(currentPath, NecessaryFiles, Grid_Desktop);
+                        CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
                     }
                     catch (Exception)
                     {
@@ -373,14 +373,14 @@ namespace FileManager
                         {
                             string extension = SortType;
                             currentPath = TB_Path.Text;
-                            NecessaryFiles = work.GetFilesWithNecessaryExtention(currentPath, extension);
+                            AllFilesInDesktopDirectory = work.GetFilesWithNecessaryExtention(currentPath, extension);
                             ClearGrid(Grid_Desktop);
-                            if (NecessaryFiles.Length == 0)
+                            if (AllFilesInDesktopDirectory.Length == 0)
                             {
                                 //В консоль - не было найдено файлов без расширения! 
                                 return;
                             }
-                            CreatedFileAndFolderInGroupBox(currentPath, NecessaryFiles, Grid_Desktop);
+                            CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
                         }
                         else//Указано несколько расширений 
                         {
@@ -399,7 +399,8 @@ namespace FileManager
                                 //В консоль - не было найдено файлов без расширения! 
                                 return;
                             }
-                            CreatedFileAndFolderInGroupBox(currentPath, NecessaryFiles, Grid_Desktop);
+                            AllFilesInDesktopDirectory = NecessaryFiles;
+                            CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
                         }
                     }
                     catch (Exception)
