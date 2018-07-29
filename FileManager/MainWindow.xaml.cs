@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -18,8 +19,9 @@ namespace FileManager
         private string[] foldersInDesktopDirectory;
         private string[] allFilesInDesktopDirectory;
         private string[] allFoldersAndFilesInFolder;
-        private string[] changedFilesInDesktop;
         private string pathToDesktopDirectory;
+        private bool isGet = false;
+        private List<string> paths = new List<string>();
         WorkWithFolders work = new WorkWithFolders();
         public string PathToDesktopDirectory
         {
@@ -87,6 +89,8 @@ namespace FileManager
             FoldersInDesktopDirectory = work.GetSubfolders(PathToDesktopDirectory.ToString());
             AllFilesInDesktopDirectory = FoldersInDesktopDirectory.Concat(FilesInDesktopDirectory).ToArray();
             TB_Path.Text = PathToDesktopDirectory;
+            BT_Back.IsEnabled = false;
+            BT_Next.IsEnabled = false;
 
         }
 
@@ -177,8 +181,8 @@ namespace FileManager
                 }
                 groupBox.Content = grid;
                 icon.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(Open);
-                //icon.MouseEnter += (s, e) => Mouse.OverrideCursor = Cursors.Hand;
-                //icon.MouseLeave += (s, e) => Mouse.OverrideCursor = Cursors.Arrow;
+               // icon.MouseEnter += (s, e) => Mouse.OverrideCursor = Cursors.Hand;
+               // icon.MouseLeave += (s, e) => Mouse.OverrideCursor = Cursors.Arrow;
                 Grid.SetColumn(icon, 0);
                 Grid.SetColumn(LB_Type, 1);
                 Grid.SetColumn(LB_Date, 2);
@@ -193,44 +197,50 @@ namespace FileManager
         private void Open(object sender, EventArgs e)
         {
             string name = ((System.Windows.Controls.Image)sender).Name.Remove(0,4);
-            string path = TB_Path.Text;
-            WorkWithFolders work = new WorkWithFolders();
-            if (path == PathToDesktopDirectory)
+            BT_Back.IsEnabled = true;
+            if (TB_Path.Text == PathToDesktopDirectory)
             {
-                if (changedFilesInDesktop == null)
+                if (File.Exists(AllFilesInDesktopDirectory[Convert.ToInt32(name)]))
                 {
-                    if (File.Exists(AllFilesInDesktopDirectory[Convert.ToInt32(name)]))
-                    {
-                        System.Diagnostics.Process.Start(AllFilesInDesktopDirectory[Convert.ToInt32(name)]);
-                    }
-                    else
-                    {
-                        TB_Path.Text = AllFilesInDesktopDirectory[Convert.ToInt32(name)];
-                        Grid_Desktop.Children.Clear();
-                        Grid_Desktop.RowDefinitions.Clear();
-                        Grid_Desktop.ColumnDefinitions.Clear();
-                        string[] files = work.GetFiles(AllFilesInDesktopDirectory[Convert.ToInt32(name)]);
-                        string[] folder = work.GetSubfolders(AllFilesInDesktopDirectory[Convert.ToInt32(name)]);
-                        AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
-                        CreatedFileAndFolderInGroupBox(AllFilesInDesktopDirectory[Convert.ToInt32(name)], AllFoldersAndFilesInFolder, Grid_Desktop);
-                    }
+                    System.Diagnostics.Process.Start(AllFilesInDesktopDirectory[Convert.ToInt32(name)]);
                 }
                 else
                 {
-                    if (File.Exists(changedFilesInDesktop[Convert.ToInt32(name)]))
+                    
+                    TB_Path.Text = AllFilesInDesktopDirectory[Convert.ToInt32(name)];
+                    Grid_Desktop.Children.Clear();
+                    Grid_Desktop.RowDefinitions.Clear();
+                    Grid_Desktop.ColumnDefinitions.Clear();
+                    string[] files = work.GetFiles(AllFilesInDesktopDirectory[Convert.ToInt32(name)]);
+                    string[] folder = work.GetSubfolders(AllFilesInDesktopDirectory[Convert.ToInt32(name)]);
+                    AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
+                    CreatedFileAndFolderInGroupBox(AllFilesInDesktopDirectory[Convert.ToInt32(name)], AllFoldersAndFilesInFolder, Grid_Desktop);
+                    if (paths.Count != 0)
                     {
-                        System.Diagnostics.Process.Start(changedFilesInDesktop[Convert.ToInt32(name)]);
+                        for (int i = 0; i < paths.Count; i++)
+                        {
+                            if (paths[i] == TB_Path.Text)
+                            {
+                                isGet = true;
+                            }
+                            else
+                            {
+                                paths.Clear();
+                                paths.Add(TB_Path.Text);
+                            }
+
+                            if (isGet != true)
+                            {
+                                paths.Add(TB_Path.Text);
+
+                            }
+
+                           
+                        }
                     }
                     else
                     {
-                        TB_Path.Text = changedFilesInDesktop[Convert.ToInt32(name)];
-                        Grid_Desktop.Children.Clear();
-                        Grid_Desktop.RowDefinitions.Clear();
-                        Grid_Desktop.ColumnDefinitions.Clear();
-                        string[] files = work.GetFiles(changedFilesInDesktop[Convert.ToInt32(name)]);
-                        string[] folder = work.GetSubfolders(changedFilesInDesktop[Convert.ToInt32(name)]);
-                        AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
-                        CreatedFileAndFolderInGroupBox(changedFilesInDesktop[Convert.ToInt32(name)], AllFoldersAndFilesInFolder, Grid_Desktop);
+                        paths.Add(TB_Path.Text);
                     }
                 }
             }
@@ -247,11 +257,43 @@ namespace FileManager
                         Array.Clear(AllFoldersAndFilesInFolder, 0, AllFoldersAndFilesInFolder.Length);
                     }
                     AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
-                    CreatedFileAndFolderInGroupBox(path, AllFoldersAndFilesInFolder, Grid_Desktop);
+                    CreatedFileAndFolderInGroupBox(TB_Path.Text, AllFoldersAndFilesInFolder, Grid_Desktop);
+                    isGet = false;
+                    if (paths.Count != 0)
+                    {
+                        for (int i = 0; i < paths.Count; i++)
+                        {
+                            if (paths[i] == TB_Path.Text)
+                            {
+                                isGet = true;
+                            }
+
+                            if(paths.Count > 1 && paths[1] != TB_Path.Text)
+                            {
+                                paths.RemoveAt(1);
+                            }
+                        }
+                        if (isGet != true)
+                        {
+                            paths.Add(TB_Path.Text);
+
+                        }
+                    }
+                    else
+                    {
+                        paths.Add(TB_Path.Text);
+                    }
                 }
                 else
                 {
-                    System.Diagnostics.Process.Start(AllFoldersAndFilesInFolder[Convert.ToInt32(name)]);
+                    try
+                    {
+                        System.Diagnostics.Process.Start(AllFoldersAndFilesInFolder[Convert.ToInt32(name)]);
+                    }
+                    catch (Exception j)
+                    {
+                        Console.Text = "Невозможно запустить программу(недостаточно прав)"  + "/n" + j.ToString(); // выводим об ошибке в консоль
+                    }
                 }
             }
         }
@@ -282,19 +324,9 @@ namespace FileManager
                         string CurPath = TB_Path.Text;
                         string[] files = work.GetFiles(CurPath);
                         string[] folder = work.GetSubfolders(CurPath);
-                        if (CurPath == pathToDesktopDirectory)//Если мы на рабочем столе
-                        {
-                            AllFilesInDesktopDirectory = folder.Concat(files).ToArray();
-                            ClearGrid(Grid_Desktop);
-                            CreatedFileAndFolderInGroupBox(CurPath, AllFilesInDesktopDirectory, Grid_Desktop);
-                            changedFilesInDesktop = null;
-                        }
-                        else//Если мы не на рабочем столе
-                        {
-                            AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
-                            ClearGrid(Grid_Desktop);
-                            CreatedFileAndFolderInGroupBox(CurPath, AllFoldersAndFilesInFolder, Grid_Desktop);
-                        }
+                        AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
+                        ClearGrid(Grid_Desktop);
+                        CreatedFileAndFolderInGroupBox(CurPath, AllFoldersAndFilesInFolder, Grid_Desktop);
                         return;
                     }
                     catch (Exception)
@@ -313,92 +345,19 @@ namespace FileManager
                 }
                 if (SelectedIndex == 3)//Сначала файлы 
                 {
-                    try
-                    {
-                        string currentPath = TB_Path.Text;
-                        if (currentPath == pathToDesktopDirectory)
-                        {
-                            changedFilesInDesktop = work.GetAllFilesThenAllFolders(currentPath);
-                            ClearGrid(Grid_Desktop);
-                            CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
-                        }
-                        else
-                        {
-                            AllFilesInDesktopDirectory = work.GetAllFilesThenAllFolders(currentPath);
-                            ClearGrid(Grid_Desktop);
-                            CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
-                        }
-                        
-                    }
-                    catch(Exception)
-                    {
-                        //В консоль - Ошибка! 
-                    }
+
                 }
                 if (SelectedIndex == 4)//Сначала папки 
                 {
-                    try
-                    {
-                        string currentPath = TB_Path.Text;
-                        if (currentPath == pathToDesktopDirectory)
-                        {
-                            changedFilesInDesktop = work.GetAllFoldersThenAllFiles(currentPath);
-                            ClearGrid(Grid_Desktop);
-                            CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
-                        }
-                        else
-                        {
-                            AllFilesInDesktopDirectory = work.GetAllFoldersThenAllFiles(currentPath);
-                            ClearGrid(Grid_Desktop);
-                            CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
-                        }
 
-                    }
-                    catch (Exception)
-                    {
-                        //В консоль - Ошибка! 
-                    }
                 }
                 if (SelectedIndex == 5)//Только файлы 
                 {
-                    try
-                    {
-                        string currentPath = TB_Path.Text;
-                        if (currentPath == pathToDesktopDirectory)
-                        {
-                            changedFilesInDesktop = work.GetFiles(currentPath);
-                            ClearGrid(Grid_Desktop);
-                            CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
-                        }
-                        else
-                        {
-                            AllFilesInDesktopDirectory = work.GetFiles(currentPath);
-                            ClearGrid(Grid_Desktop);
-                            CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
-                        }
 
-                    }
-                    catch (Exception)
-                    {
-                        //В консоль - Ошибка! 
-                    }
                 }
                 if (SelectedIndex == 6)//Только папки 
                 {
-                    string currentPath = TB_Path.Text;
-                    if (currentPath == pathToDesktopDirectory)
-                    {
-                        changedFilesInDesktop = work.GetSubfolders(currentPath);
-                        ClearGrid(Grid_Desktop);
-                        CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
-                    }
-                    else
-                    {
-                        AllFilesInDesktopDirectory = work.GetSubfolders(currentPath);
-                        ClearGrid(Grid_Desktop);
-                        CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
-                    }
-                    
+
                 }
             }
             else
@@ -417,31 +376,15 @@ namespace FileManager
                         string currentPath = TB_Path.Text;
                         string[] NecessaryFiles = { };
                         string extension = "";
-                        if (currentPath == pathToDesktopDirectory)
+                        currentPath = TB_Path.Text;
+                        NecessaryFiles = work.GetFilesWithNecessaryExtention(currentPath, extension);
+                        if (NecessaryFiles.Length == 0)
                         {
-                            changedFilesInDesktop = work.GetFilesWithNecessaryExtention(currentPath, extension);
-                            if (changedFilesInDesktop.Length == 0)
-                            {
-                                CB_Sort.SelectedIndex = 0;
-                                //В консоль - не было найдено файлов без расширения! 
-                                return;
-                            }
-                            ClearGrid(Grid_Desktop);
-                            CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                            //В консоль - не было найдено файлов без расширения! 
+                            return;
                         }
-                        else
-                        {
-                            AllFilesInDesktopDirectory = work.GetFilesWithNecessaryExtention(currentPath, extension);
-                            if (AllFilesInDesktopDirectory.Length == 0)
-                            {
-                                CB_Sort.SelectedIndex = 0;
-                                //В консоль - не было найдено файлов без расширения! 
-                                return;
-                            }
-                            ClearGrid(Grid_Desktop);
-                            CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
-                        }
-                        
+                        ClearGrid(Grid_Desktop);
+                        CreatedFileAndFolderInGroupBox(currentPath, NecessaryFiles, Grid_Desktop);
                     }
                     catch (Exception)
                     {
@@ -461,36 +404,14 @@ namespace FileManager
                         {
                             string extension = SortType;
                             currentPath = TB_Path.Text;
-                            if (currentPath == pathToDesktopDirectory)
-                            {
-                                changedFilesInDesktop = work.GetFilesWithNecessaryExtention(currentPath, extension);
-                                if (changedFilesInDesktop.Length == 0)
-                                {
-                                    CB_Sort.SelectedIndex = 0;
-                                    //В консоль - не было найдено файлов без расширения! 
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                allFoldersAndFilesInFolder = work.GetFilesWithNecessaryExtention(currentPath, extension);
-                                if (allFoldersAndFilesInFolder.Length == 0)
-                                {
-                                    CB_Sort.SelectedIndex = 0;
-                                    //В консоль - не было найдено файлов без расширения! 
-                                    return;
-                                }
-                            }
-                            changedFilesInDesktop = work.GetFilesWithNecessaryExtention(currentPath, extension);
+                            NecessaryFiles = work.GetFilesWithNecessaryExtention(currentPath, extension);
                             ClearGrid(Grid_Desktop);
-                            if (currentPath == pathToDesktopDirectory)
+                            if (NecessaryFiles.Length == 0)
                             {
-                                CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
+                                //В консоль - не было найдено файлов без расширения! 
+                                return;
                             }
-                            else
-                            {
-                                CreatedFileAndFolderInGroupBox(currentPath, allFoldersAndFilesInFolder, Grid_Desktop);
-                            }
+                            CreatedFileAndFolderInGroupBox(currentPath, NecessaryFiles, Grid_Desktop);
                         }
                         else//Указано несколько расширений 
                         {
@@ -506,20 +427,10 @@ namespace FileManager
                             ClearGrid(Grid_Desktop);
                             if (NecessaryFiles.Length == 0)
                             {
-                                CB_Sort.SelectedIndex = 0;
                                 //В консоль - не было найдено файлов без расширения! 
                                 return;
                             }
-                            if(currentPath == pathToDesktopDirectory)
-                            {
-                                changedFilesInDesktop = NecessaryFiles;
-                                CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
-                            }
-                            else
-                            {
-                                allFoldersAndFilesInFolder = NecessaryFiles;
-                                CreatedFileAndFolderInGroupBox(currentPath, allFoldersAndFilesInFolder, Grid_Desktop);
-                            }
+                            CreatedFileAndFolderInGroupBox(currentPath, NecessaryFiles, Grid_Desktop);
                         }
                     }
                     catch (Exception)
@@ -537,6 +448,110 @@ namespace FileManager
             grid.Children.Clear();
             grid.RowDefinitions.Clear();
             grid.ColumnDefinitions.Clear();
+        }
+
+        private void BT_Back_Click(object sender, RoutedEventArgs e)
+        {
+           if(TB_Path.Text == pathToDesktopDirectory)
+           {
+                BT_Back.IsEnabled = false;
+                BT_Next.IsEnabled = false;
+           }
+           else
+           {
+                BT_Next.IsEnabled = true;
+                ClearGrid(Grid_Desktop);
+                string path = TB_Path.Text;
+                int count = 0;
+                char[] simvol = path.ToCharArray();
+                for(int j = 0; j < simvol.Length; j++)
+                {
+                    if(simvol[j] == 92)
+                    {
+                        count++;
+                    }
+                }
+                if(count > 4)
+                {
+                    for (int i = 0; i < paths.Count; i++)
+                    {
+                        if (paths[i] == path)
+                        {
+                            string[] files = work.GetFiles(paths[i - 1]);
+                            string[] folder = work.GetSubfolders(paths[i - 1]);
+                            if (AllFoldersAndFilesInFolder.Length != 0)
+                            {
+                                Array.Clear(AllFoldersAndFilesInFolder, 0, AllFoldersAndFilesInFolder.Length);
+                            }
+                            AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
+                            CreatedFileAndFolderInGroupBox(paths[i - 1], AllFoldersAndFilesInFolder, Grid_Desktop);
+                            TB_Path.Text = paths[i - 1];
+                        }
+                    }
+                }
+                else
+                {
+                    CreatedFileAndFolderInGroupBox(PathToDesktopDirectory, AllFilesInDesktopDirectory, Grid_Desktop);
+                    BT_Back.IsEnabled = false;
+                    if (AllFoldersAndFilesInFolder.Length != 0)
+                    {
+                        Array.Clear(AllFoldersAndFilesInFolder, 0, AllFoldersAndFilesInFolder.Length);
+                    }
+                    TB_Path.Text = PathToDesktopDirectory;
+                }
+           }
+        }
+
+        private void BT_Next_Click(object sender, RoutedEventArgs e)
+        {
+            string nextPath = "";
+            for(int i = 0; i < paths.Count; i++)
+            {
+                if(paths[i] == TB_Path.Text)
+                {
+                    try
+                    {
+                         nextPath = paths[i + 1];
+                        if(TB_Path.Text == paths[paths.Count - 1])
+                        {
+                            BT_Next.IsEnabled = false;
+                        }
+                        else
+                        {
+                            BT_Next.IsEnabled = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Console.Text += "Невозможно вернутся дальше.";
+                        TB_Console.IsSelected = true;
+                        TI_Operation.IsSelected = false;
+                    }
+                }
+                else if (TB_Path.Text == pathToDesktopDirectory)
+                {
+                    nextPath = paths[0];
+                    BT_Next.IsEnabled = true;
+                }
+                else
+                {
+                    BT_Next.IsEnabled = false;
+                }
+            }
+            if(nextPath != "")
+            {
+                ClearGrid(Grid_Desktop);
+                string[] files = work.GetFiles(nextPath);
+                string[] folder = work.GetSubfolders(nextPath);
+                if (AllFoldersAndFilesInFolder.Length != 0)
+                {
+                    Array.Clear(AllFoldersAndFilesInFolder, 0, AllFoldersAndFilesInFolder.Length);
+                }
+                AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
+                CreatedFileAndFolderInGroupBox(nextPath, AllFoldersAndFilesInFolder, Grid_Desktop);
+                TB_Path.Text = nextPath;
+                BT_Back.IsEnabled = true;
+            }
         }
     }
 }

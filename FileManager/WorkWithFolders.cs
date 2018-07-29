@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Drawing;
-using System.Linq;
-
 namespace FileManager
 {
     class WorkWithFolders
@@ -50,11 +48,8 @@ namespace FileManager
                 }*/
                 return str1;
             }
-            catch
-            {
-                //В консоль: Не удалось получить информацию по этому пути.
-                return null;
-            }
+            catch { //MessageBox.Show("Не удалось получить информацию по этому пути.");
+                return null; }
         }
 
         public string[] GetFiles(string path)
@@ -69,7 +64,7 @@ namespace FileManager
             catch (Exception)
             {
                 //Выводим сообщение об ошибке в консоль:
-                //Не удалось получить файлы и каталоги из папки ... . Причина: папка пуста или ее не существует.
+                //Неудалось получить файлы и каталоги из папки ... . Причина: папка пуста или ее не существует.
             }
             return files.ToArray();
         }
@@ -97,43 +92,6 @@ namespace FileManager
             }
 
             return necessaryFiles.ToArray();
-        }
-
-        public string[] GetAllFilesThenAllFolders(string path)
-        {
-            try
-            {
-                string[] files = GetFiles(path);//Получаем файлы по пути path 
-                string[] folders = GetSubfolders(path);//Получаем папки по пути path
-                string[] result = files.Concat(folders).ToArray();
-
-                return result;
-            }
-            catch(Exception)
-            {
-                //В консоль - ошибка сортировки
-                return null;
-            }
-
-        }
-
-        public string[] GetAllFoldersThenAllFiles(string path)
-        {
-
-            try
-            {
-                string[] folders = GetSubfolders(path);//Получаем папки по пути path
-                string[] files = GetFiles(path);//Получаем файлы по пути path 
-                string[] result = folders.Concat(files).ToArray();
-
-                return result;
-            }
-            catch (Exception)
-            {
-                //В консоль - ошибка сортировки
-                return null;
-            }
-
         }
 
         public void CreateDir(string path, string dirName)
