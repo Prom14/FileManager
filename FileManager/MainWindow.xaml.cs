@@ -20,6 +20,8 @@ namespace FileManager
         private string[] allFilesInDesktopDirectory;
         private string[] allFoldersAndFilesInFolder;
         private string[] changedFilesInDesktop;
+        private string[] Commands =  {"help","createfile","createfolder","delete","quit"};
+        private string backText;
         private string pathToDesktopDirectory;
         private bool isGet = false;
         private List<string> paths = new List<string>();
@@ -688,14 +690,14 @@ namespace FileManager
         private void BT_Next_Click(object sender, RoutedEventArgs e)
         {
             string nextPath = "";
-            for(int i = 0; i < paths.Count; i++)
+            for (int i = 0; i < paths.Count; i++)
             {
-                if(paths[i] == TB_Path.Text)
+                if (paths[i] == TB_Path.Text)
                 {
                     try
                     {
-                         nextPath = paths[i + 1];
-                        if(TB_Path.Text == paths[paths.Count - 1])
+                        nextPath = paths[i + 1];
+                        if (TB_Path.Text == paths[paths.Count - 1])
                         {
                             BT_Next.IsEnabled = false;
                         }
@@ -721,7 +723,7 @@ namespace FileManager
                     BT_Next.IsEnabled = false;
                 }
             }
-            if(nextPath != "")
+            if (nextPath != "")
             {
                 ClearGrid(Grid_Desktop);
                 string[] files = work.GetFiles(nextPath);
@@ -736,6 +738,67 @@ namespace FileManager
                 BT_Back.IsEnabled = true;
             }
             CB_Sort.SelectedIndex = 0;
+        }
+
+        private void Console_KeyDown_1(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                string text;
+                if(backText != null)
+                {
+                    text = Console.Text.Remove(0,backText.ToCharArray().Length);
+                    backText = text;
+                }
+                else
+
+                {
+                    text = Console.Text;
+                }
+                string command = "";
+                string attr = "";
+                int count = 0;
+                bool whiteSpace = false; ;
+                char[] commands = text.ToCharArray();
+                for (int j = 0; j < commands.Length; j++)
+                {
+                    count++;
+                    if (Char.IsWhiteSpace(commands[j])) { whiteSpace = true; break; }
+
+                }
+                if (whiteSpace == true)
+                {
+                    command = text.Remove(count - 1);
+                    attr = text.Remove(0, count);
+                }
+                else
+                {
+                    command = text;
+                }
+
+                if (command == "help")
+                {
+                    Console.Text += "\r\n";
+                    for (int i = 0; i < Commands.Length; i++)
+                    {
+                        Console.Text += Commands[i] + " ";
+                    }
+                    Console.Text += "\r\n";
+                }
+                else if(command == "quit")
+                {
+                    Application app = Application.Current;
+
+                    app.Shutdown();
+                }
+                else
+                {
+                    Console.Text += "\r\n" + "Такой команды не существует!" + "\r\n";
+                }
+                Console.SelectionStart = Console.Text.Length;
+                Console.Focus();
+                backText = Console.Text;
+            }
         }
     }
 }

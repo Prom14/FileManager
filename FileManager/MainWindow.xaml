@@ -180,7 +180,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="Console" BorderThickness="0" IsReadOnly="True" Grid.Row="0" Grid.Column="0"  TextWrapping="Wrap" Text="Console v0.0.1 created by RuslanShevcov" Background="#FF222327" Foreground="#FFB4B4B4" SelectionBrush="#FFC3C3C3" BorderBrush="#FF2C3236" SelectionOpacity="0.2" FontSize="10" FontFamily="Microsoft PhagsPa"/>
+                    <TextBox IsReadOnly="False" x:Name="Console" BorderThickness="0"  Grid.Row="0" Grid.Column="0"  TextWrapping="Wrap"  Background="#FF222327" Foreground="#FFB4B4B4" SelectionBrush="#FFC3C3C3" BorderBrush="#FF2C3236" SelectionOpacity="0.2" FontSize="10" FontFamily="Microsoft PhagsPa" KeyDown="Console_KeyDown_1"/>
                 </Grid>
 
             </TabItem>
