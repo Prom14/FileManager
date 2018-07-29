@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace FileManager
         private string[] allFilesInDesktopDirectory;
         private string[] allFoldersAndFilesInFolder;
         private string pathToDesktopDirectory;
+        private bool isGet = false;
+        private List<string> paths = new List<string>();
         WorkWithFolders work = new WorkWithFolders();
         public string PathToDesktopDirectory
         {
@@ -86,6 +89,8 @@ namespace FileManager
             FoldersInDesktopDirectory = work.GetSubfolders(PathToDesktopDirectory.ToString());
             AllFilesInDesktopDirectory = FoldersInDesktopDirectory.Concat(FilesInDesktopDirectory).ToArray();
             TB_Path.Text = PathToDesktopDirectory;
+            BT_Back.IsEnabled = false;
+            BT_Next.IsEnabled = false;
 
         }
 
@@ -176,8 +181,8 @@ namespace FileManager
                 }
                 groupBox.Content = grid;
                 icon.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(Open);
-                //icon.MouseEnter += (s, e) => Mouse.OverrideCursor = Cursors.Hand;
-                //icon.MouseLeave += (s, e) => Mouse.OverrideCursor = Cursors.Arrow;
+               // icon.MouseEnter += (s, e) => Mouse.OverrideCursor = Cursors.Hand;
+               // icon.MouseLeave += (s, e) => Mouse.OverrideCursor = Cursors.Arrow;
                 Grid.SetColumn(icon, 0);
                 Grid.SetColumn(LB_Type, 1);
                 Grid.SetColumn(LB_Date, 2);
@@ -192,9 +197,8 @@ namespace FileManager
         private void Open(object sender, EventArgs e)
         {
             string name = ((System.Windows.Controls.Image)sender).Name.Remove(0,4);
-            string path = TB_Path.Text;
-            WorkWithFolders work = new WorkWithFolders();
-            if (path == PathToDesktopDirectory)
+            BT_Back.IsEnabled = true;
+            if (TB_Path.Text == PathToDesktopDirectory)
             {
                 if (File.Exists(AllFilesInDesktopDirectory[Convert.ToInt32(name)]))
                 {
@@ -202,6 +206,7 @@ namespace FileManager
                 }
                 else
                 {
+                    
                     TB_Path.Text = AllFilesInDesktopDirectory[Convert.ToInt32(name)];
                     Grid_Desktop.Children.Clear();
                     Grid_Desktop.RowDefinitions.Clear();
@@ -210,6 +215,33 @@ namespace FileManager
                     string[] folder = work.GetSubfolders(AllFilesInDesktopDirectory[Convert.ToInt32(name)]);
                     AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
                     CreatedFileAndFolderInGroupBox(AllFilesInDesktopDirectory[Convert.ToInt32(name)], AllFoldersAndFilesInFolder, Grid_Desktop);
+                    if (paths.Count != 0)
+                    {
+                        for (int i = 0; i < paths.Count; i++)
+                        {
+                            if (paths[i] == TB_Path.Text)
+                            {
+                                isGet = true;
+                            }
+                            else
+                            {
+                                paths.Clear();
+                                paths.Add(TB_Path.Text);
+                            }
+
+                            if (isGet != true)
+                            {
+                                paths.Add(TB_Path.Text);
+
+                            }
+
+                           
+                        }
+                    }
+                    else
+                    {
+                        paths.Add(TB_Path.Text);
+                    }
                 }
             }
             else
@@ -225,11 +257,43 @@ namespace FileManager
                         Array.Clear(AllFoldersAndFilesInFolder, 0, AllFoldersAndFilesInFolder.Length);
                     }
                     AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
-                    CreatedFileAndFolderInGroupBox(path, AllFoldersAndFilesInFolder, Grid_Desktop);
+                    CreatedFileAndFolderInGroupBox(TB_Path.Text, AllFoldersAndFilesInFolder, Grid_Desktop);
+                    isGet = false;
+                    if (paths.Count != 0)
+                    {
+                        for (int i = 0; i < paths.Count; i++)
+                        {
+                            if (paths[i] == TB_Path.Text)
+                            {
+                                isGet = true;
+                            }
+
+                            if(paths.Count > 1 && paths[1] != TB_Path.Text)
+                            {
+                                paths.RemoveAt(1);
+                            }
+                        }
+                        if (isGet != true)
+                        {
+                            paths.Add(TB_Path.Text);
+
+                        }
+                    }
+                    else
+                    {
+                        paths.Add(TB_Path.Text);
+                    }
                 }
                 else
                 {
-                    System.Diagnostics.Process.Start(AllFoldersAndFilesInFolder[Convert.ToInt32(name)]);
+                    try
+                    {
+                        System.Diagnostics.Process.Start(AllFoldersAndFilesInFolder[Convert.ToInt32(name)]);
+                    }
+                    catch (Exception j)
+                    {
+                        Console.Text = "Невозможно запустить программу(недостаточно прав)"  + "/n" + j.ToString(); // выводим об ошибке в консоль
+                    }
                 }
             }
         }
@@ -384,6 +448,110 @@ namespace FileManager
             grid.Children.Clear();
             grid.RowDefinitions.Clear();
             grid.ColumnDefinitions.Clear();
+        }
+
+        private void BT_Back_Click(object sender, RoutedEventArgs e)
+        {
+           if(TB_Path.Text == pathToDesktopDirectory)
+           {
+                BT_Back.IsEnabled = false;
+                BT_Next.IsEnabled = false;
+           }
+           else
+           {
+                BT_Next.IsEnabled = true;
+                ClearGrid(Grid_Desktop);
+                string path = TB_Path.Text;
+                int count = 0;
+                char[] simvol = path.ToCharArray();
+                for(int j = 0; j < simvol.Length; j++)
+                {
+                    if(simvol[j] == 92)
+                    {
+                        count++;
+                    }
+                }
+                if(count > 4)
+                {
+                    for (int i = 0; i < paths.Count; i++)
+                    {
+                        if (paths[i] == path)
+                        {
+                            string[] files = work.GetFiles(paths[i - 1]);
+                            string[] folder = work.GetSubfolders(paths[i - 1]);
+                            if (AllFoldersAndFilesInFolder.Length != 0)
+                            {
+                                Array.Clear(AllFoldersAndFilesInFolder, 0, AllFoldersAndFilesInFolder.Length);
+                            }
+                            AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
+                            CreatedFileAndFolderInGroupBox(paths[i - 1], AllFoldersAndFilesInFolder, Grid_Desktop);
+                            TB_Path.Text = paths[i - 1];
+                        }
+                    }
+                }
+                else
+                {
+                    CreatedFileAndFolderInGroupBox(PathToDesktopDirectory, AllFilesInDesktopDirectory, Grid_Desktop);
+                    BT_Back.IsEnabled = false;
+                    if (AllFoldersAndFilesInFolder.Length != 0)
+                    {
+                        Array.Clear(AllFoldersAndFilesInFolder, 0, AllFoldersAndFilesInFolder.Length);
+                    }
+                    TB_Path.Text = PathToDesktopDirectory;
+                }
+           }
+        }
+
+        private void BT_Next_Click(object sender, RoutedEventArgs e)
+        {
+            string nextPath = "";
+            for(int i = 0; i < paths.Count; i++)
+            {
+                if(paths[i] == TB_Path.Text)
+                {
+                    try
+                    {
+                         nextPath = paths[i + 1];
+                        if(TB_Path.Text == paths[paths.Count - 1])
+                        {
+                            BT_Next.IsEnabled = false;
+                        }
+                        else
+                        {
+                            BT_Next.IsEnabled = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Console.Text += "Невозможно вернутся дальше.";
+                        TB_Console.IsSelected = true;
+                        TI_Operation.IsSelected = false;
+                    }
+                }
+                else if (TB_Path.Text == pathToDesktopDirectory)
+                {
+                    nextPath = paths[0];
+                    BT_Next.IsEnabled = true;
+                }
+                else
+                {
+                    BT_Next.IsEnabled = false;
+                }
+            }
+            if(nextPath != "")
+            {
+                ClearGrid(Grid_Desktop);
+                string[] files = work.GetFiles(nextPath);
+                string[] folder = work.GetSubfolders(nextPath);
+                if (AllFoldersAndFilesInFolder.Length != 0)
+                {
+                    Array.Clear(AllFoldersAndFilesInFolder, 0, AllFoldersAndFilesInFolder.Length);
+                }
+                AllFoldersAndFilesInFolder = folder.Concat(files).ToArray();
+                CreatedFileAndFolderInGroupBox(nextPath, AllFoldersAndFilesInFolder, Grid_Desktop);
+                TB_Path.Text = nextPath;
+                BT_Back.IsEnabled = true;
+            }
         }
     }
 }

@@ -61,11 +61,14 @@
                             <RowDefinition Height="1*"></RowDefinition>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.8*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.05*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.6*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.05*"></ColumnDefinition>
                             <ColumnDefinition Width="0.2*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="TB_Path" Margin="11 0 0 0" BorderThickness="0" Text="Path" Grid.Row="1" Grid.Column="0" IsReadOnly="True" SelectionBrush="#FF696D7A" Foreground="#FFC7C7C7" Background="#FF222327" BorderBrush="#FF696D7A" VerticalAlignment="Center" FontSize="14"/>
-                        <ComboBox x:Name="CB_Sort"  MaxHeight="19" Grid.Row="1" Grid.Column="1" SelectedIndex="0" FontSize="10" SelectionChanged="ComboBox_SelectionChanged">
+                        <Button x:Name="BT_Back"  Grid.Row="1" Grid.Column="0" Content="&lt;" MaxHeight="19" Foreground="#FFD1D1D1" BorderThickness="0" Background="#FF141517" BorderBrush="White" ClipToBounds="True" SnapsToDevicePixels="True" Cursor="Hand" Click="BT_Back_Click"/>
+                        <TextBox x:Name="TB_Path" Margin="0 0 0 0" BorderThickness="0" Text="Path" Grid.Row="1" Grid.Column="1" IsReadOnly="True" SelectionBrush="#FF696D7A" Foreground="#FFC7C7C7" Background="#FF222327" BorderBrush="#FF696D7A" VerticalAlignment="Center" FontSize="14"/>
+                        <ComboBox x:Name="CB_Sort"  MaxHeight="19" Grid.Row="1" Grid.Column="3" SelectedIndex="0" FontSize="10" SelectionChanged="ComboBox_SelectionChanged">
                             <ListBoxItem Content="Сортировка"/>
                             <ListBoxItem Content="По алфавиту"/>
                             <ListBoxItem Content="По дате создания"/>
@@ -133,6 +136,7 @@
                             <ListBoxItem Content="Только .bsp"/>
                             <ListBoxItem Content="Без расширения"/>
                         </ComboBox>
+                        <Button x:Name="BT_Next" Grid.Row="1" Grid.Column="2" Content="&gt;" MaxHeight="19" Foreground="#FFD1D1D1" BorderThickness="0" Background="#FF141517" Click="BT_Next_Click"></Button>
                     </Grid>
 
                     <TabControl TabStripPlacement="Left" Grid.Row="1" Grid.Column="0" BorderBrush="#FF36393F" Background="#FF36393F" Foreground="#FF36393F">
@@ -167,7 +171,7 @@
                 <Grid Background="#FF36393F" Margin="0,0,-4,0"/>
             </TabItem>
 
-            <TabItem Header="Консоль"  BorderBrush="#FF1B1B1B" Background="#FF1B1B1B" Foreground="White">
+            <TabItem x:Name="TB_Console" Header="Консоль"  BorderBrush="#FF1B1B1B" Background="#FF1B1B1B" Foreground="White">
                 <Grid Background="#FF36393F">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"></RowDefinition>

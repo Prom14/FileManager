@@ -48,7 +48,8 @@ namespace FileManager
                 }*/
                 return str1;
             }
-            catch { MessageBox.Show("Не удалось получить информацию по этому пути."); return null; }
+            catch { //MessageBox.Show("Не удалось получить информацию по этому пути.");
+                return null; }
         }
 
         public string[] GetFiles(string path)
