@@ -20,7 +20,7 @@ namespace FileManager
         private string[] allFilesInDesktopDirectory;
         private string[] allFoldersAndFilesInFolder;
         private string[] changedFilesInDesktop;
-        private string[] Commands =  {"help","createfile","createfolder","delete","quit"};
+        private string[] Commands =  {"help","createfile","createfolder","deletefile","deletefolder","clear","quit"};
         private string backText;
         private string pathToDesktopDirectory;
         private bool isGet = false;
@@ -775,7 +775,7 @@ namespace FileManager
                 {
                     command = text;
                 }
-
+                #region Commands
                 if (command == "help")
                 {
                     Console.Text += "\r\n";
@@ -791,10 +791,88 @@ namespace FileManager
 
                     app.Shutdown();
                 }
+                else if(command == "createfolder")
+                {
+                    try
+                    {
+                        if (work.CreateDir(attr))
+                        {
+                            Console.Text += "\r\n" + "Папка успешно создана по пути" + " " + attr + "\r\n";
+                        }
+                        else
+                        {
+                            Console.Text += "\r\n" + "Создание папки ... прошло неуспешно. Причина: папка по такому пути уже есть. \r\n";
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Console.Text += "Создание папки ... прошло неуспешно. Причина: невалидный путь." + "\r\n";
+                    }
+                }
+                else if(command == "createfile")
+                {
+                    try
+                    {
+                        if (work.CreateFile(attr))
+                        {
+                            Console.Text += "\r\n" + "Файл успешно создан по пути" + " " + attr + "\r\n";
+                        }
+                        else
+                        {
+                            Console.Text += "\r\n" + "Создание файла ... прошло неуспешно. Причина: файл по такому пути уже есть. \r\n";
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Console.Text += "Создание папки ... прошло неуспешно. Причина: невалидный путь." + "\r\n";
+                    }
+                }
+                else if(command == "deletefolder")
+                {
+                    try
+                    {
+                        if (work.DeleteDir(attr))
+                        { 
+                            Console.Text += "\r\n" + "Папка успешно удалена по пути" + " " + attr + "\r\n";
+                        }
+                        else
+                        {
+                            Console.Text += " \r\n Удаление папки ... прошло неуспешно. Причина: папка не была найдена по пути:" + " " + attr + "\r\n";
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Console.Text += "Удаление папки ... прошло неуспешно. Причина: папка не была найдена по пути:" + " " + attr + "\r\n";
+                    }
+                }
+                else if (command == "deletefile")
+                {
+                    try
+                    {
+                        if (work.DeleteFile(attr))
+                        {
+                            Console.Text += "\r\n" + "Файл успешно удален по пути" + " " + attr + "\r\n";
+                        }
+                        else
+                        {
+                            Console.Text += " \r\n Удаление файла ... прошло неуспешно. Причина: файл не был найден по пути:" + " " + attr + "\r\n";
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        Console.Text += "Удаление файла ... прошло неуспешно. Причина: файл не был найден по пути:" + " " + attr + "\r\n";
+                    }
+                }
+                else if(command == "clear")
+                {
+                    Console.Clear();
+                }
                 else
                 {
                     Console.Text += "\r\n" + "Такой команды не существует!" + "\r\n";
                 }
+                #endregion
                 Console.SelectionStart = Console.Text.Length;
                 Console.Focus();
                 backText = Console.Text;

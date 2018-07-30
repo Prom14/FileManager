@@ -151,7 +151,44 @@ namespace FileManager
                 //Создание папки ... прошло неуспешно. Причина: невалидный путь.
             }
         }
-
+        public bool CreateDir(string path)
+        {
+            try
+            {
+                if (!Directory.Exists(path)) { Directory.CreateDirectory(path); return true; }
+                else
+                {
+                    return false;
+                    //Выводим сообщение об ошибке в консоль:
+                    //Папка с таким именем уже существует.
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+                //Выводим сообщение об ошибке в консоль:
+                //Создание папки ... прошло неуспешно. Причина: невалидный путь.
+            }
+        }
+        public bool CreateFile(string path)
+        {
+            try
+            {
+                if (!File.Exists(path))
+                {
+                    File.Create(path);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+        }
         public void DeleteDir(string path, string dirName)
         {
             try
@@ -166,6 +203,44 @@ namespace FileManager
             
         }
 
+        public bool DeleteDir(string path)
+        {
+            try
+            {
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool DeleteFile(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public void DeleteAllFilesFromDir(string path, string dirName)
         {
             try
