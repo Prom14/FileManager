@@ -390,12 +390,12 @@ namespace FileManager
                             ClearGrid(Grid_Desktop);
                             CreatedFileAndFolderInGroupBox(CurPath, AllFoldersAndFilesInFolder, Grid_Desktop);
                         }
-                        return;
+                        
                     }
                     catch (Exception)
                     {
                         //Выводим в консоль: 
-                        //Ошибка сортировки! 
+                       
                     }
                 }
                 if (SelectedIndex == 1)//По алфавиту 
@@ -427,7 +427,7 @@ namespace FileManager
                     }
                     catch (Exception)
                     {
-                        //В консоль - Ошибка! 
+                        Console.Text += "Ошибка сортировки! \r\n";
                     }
                 }
                 if (SelectedIndex == 4)//Сначала папки 
@@ -451,7 +451,7 @@ namespace FileManager
                     }
                     catch (Exception)
                     {
-                        //В консоль - Ошибка! 
+                        Console.Text += "Ошибка сортировки! \r\n";
                     }
                 }
                 if (SelectedIndex == 5)//Только файлы 
@@ -475,7 +475,7 @@ namespace FileManager
                     }
                     catch (Exception)
                     {
-                        //В консоль - Ошибка! 
+                        Console.Text += "Ошибка сортировки! \r\n";
                     }
                 }
                 if (SelectedIndex == 6)//Только папки 
@@ -501,7 +501,7 @@ namespace FileManager
                 int countItems = CB_Sort.Items.Count;
                 if (countItems == 0)
                 {
-                    //В консоль - не найдено ни одного элемента 
+                    Console.Text += "Не найдено ни одного файла!! \r\n";
                     //LB_emptyListMessage.Visibility = Visibility.Visible; 
                 }
 
@@ -518,8 +518,8 @@ namespace FileManager
                             if (changedFilesInDesktop.Length == 0)
                             {
                                 CB_Sort.SelectedIndex = 0;
-                                //В консоль - не было найдено файлов без расширения! 
-                                return;
+                                Console.Text += "Не было найдено файлов без расширения!! \r\n";
+                                
                             }
                             ClearGrid(Grid_Desktop);
                             CreatedFileAndFolderInGroupBox(currentPath, changedFilesInDesktop, Grid_Desktop);
@@ -530,8 +530,8 @@ namespace FileManager
                             if (AllFilesInDesktopDirectory.Length == 0)
                             {
                                 CB_Sort.SelectedIndex = 0;
-                                //В консоль - не было найдено файлов без расширения! 
-                                return;
+                                Console.Text += "Не было найдено файлов без расширения!! \r\n";
+                                
                             }
                             ClearGrid(Grid_Desktop);
                             CreatedFileAndFolderInGroupBox(currentPath, AllFilesInDesktopDirectory, Grid_Desktop);
@@ -540,7 +540,7 @@ namespace FileManager
                     }
                     catch (Exception)
                     {
-                        //В консоль - Ошибка сортировки! 
+                        Console.Text += "Ошибка сортировки! \r\n";
                     }
                 }
                 else//Только разрешения 
@@ -562,8 +562,8 @@ namespace FileManager
                                 if (changedFilesInDesktop.Length == 0)
                                 {
                                     CB_Sort.SelectedIndex = 0;
-                                    //В консоль - не было найдено файлов без расширения! 
-                                    return;
+                                    Console.Text += "Не было найдено файлов без расширения!! \r\n";
+                                   
                                 }
                             }
                             else
@@ -572,8 +572,8 @@ namespace FileManager
                                 if (allFoldersAndFilesInFolder.Length == 0)
                                 {
                                     CB_Sort.SelectedIndex = 0;
-                                    //В консоль - не было найдено файлов без расширения! 
-                                    return;
+                                    Console.Text += "Не было найдено файлов без расширения!! \r\n";
+                                    
                                 }
                             }
                             changedFilesInDesktop = work.GetFilesWithNecessaryExtention(currentPath, extension);
@@ -603,6 +603,7 @@ namespace FileManager
                             {
                                 CB_Sort.SelectedIndex = 0;
                                 //В консоль - не было найдено файлов без расширения! 
+                                Console.Text += "Не было найдено файлов без расширения!! \r\n";
                                 return;
                             }
                             if (currentPath == pathToDesktopDirectory)
@@ -619,11 +620,20 @@ namespace FileManager
                     }
                     catch (Exception)
                     {
-                        //Выводим в консоль: 
-                        //Ошибка сортировки! 
-                        return;
+                        Console.Text += "Ошибка сортировки! \r\n";
+                       
                     }
                 }
+            }
+            try
+            {
+                Console.SelectionStart = Console.Text.Length;
+                Console.Focus();
+                backText += Console.Text;
+            }
+            catch (Exception)
+            {
+
             }
         }
 
@@ -744,6 +754,7 @@ namespace FileManager
         {
             if (e.Key == Key.Enter)
             {
+                
                 string text;
                 if(backText != null)
                 {
