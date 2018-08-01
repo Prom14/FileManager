@@ -956,7 +956,14 @@ namespace FileManager
                 TB_Path.Text = tvItem.Header.ToString();
                 if (File.Exists(TB_Path.Text))
                 {
-                    System.Diagnostics.Process.Start(TB_Path.Text);
+                    try
+                    {
+                        System.Diagnostics.Process.Start(TB_Path.Text);
+                    }
+                    catch(Exception)
+                    {
+                        //Не удалось запустить файл.
+                    }
                 }
                 else
                 {
