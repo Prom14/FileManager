@@ -160,10 +160,12 @@
                         <TabItem Header="Избранное"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
                             <Grid Background="#FF36393F"/>
                         </TabItem>
-                        <TabItem Header="Корзина"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left">
-                            <Grid Background="#FF36393F"/>
+                        <TabItem x:Name="TB_Basket" Header="Корзина"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left" PreviewMouseLeftButtonDown="TB_Basket_PreviewMouseLeftButtonDown">
+                            <Grid x:Name="Grid_Basket" Background="#FF36393F"/>
                         </TabItem>
-                        <TabItem Header="Файл.древо"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left"/>
+                        <TabItem x:Name="TB_Tree" Header="Файл.древо"  Background="#FF1B1B1B" Foreground="#FFC7C7C7" BorderBrush="#FF1B1B1B" HorizontalAlignment="Left" PreviewMouseLeftButtonDown="TB_Tree_PreviewMouseLeftButtonDown">
+                            <Grid x:Name="Grid_Tree"></Grid>
+                        </TabItem>
                     </TabControl>
 
                 </Grid>

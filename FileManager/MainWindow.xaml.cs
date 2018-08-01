@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace FileManager
@@ -20,6 +21,7 @@ namespace FileManager
         private string[] allFilesInDesktopDirectory;
         private string[] allFoldersAndFilesInFolder;
         private string[] changedFilesInDesktop;
+        private string[] drives;
         private string[] Commands =  {"help","createfile","createfolder","deletefile","deletefolder","clear","quit"};
         private string backText;
         private string pathToDesktopDirectory;
@@ -184,8 +186,8 @@ namespace FileManager
                 }
                 groupBox.Content = grid;
                 icon.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(Open);
-               // icon.MouseEnter += (s, e) => Mouse.OverrideCursor = Cursors.Hand;
-               // icon.MouseLeave += (s, e) => Mouse.OverrideCursor = Cursors.Arrow;
+                icon.MouseEnter += (s, e) => Mouse.OverrideCursor = Cursors.Hand;
+                icon.MouseLeave += (s, e) => Mouse.OverrideCursor = Cursors.Arrow;
                 Grid.SetColumn(icon, 0);
                 Grid.SetColumn(LB_Type, 1);
                 Grid.SetColumn(LB_Date, 2);
@@ -887,6 +889,93 @@ namespace FileManager
                 Console.SelectionStart = Console.Text.Length;
                 Console.Focus();
                 backText = Console.Text;
+            }
+        }
+
+        private void TB_Basket_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Grid_Basket.Children.Count == 0)
+            {
+                string[] files = work.GetFiles("C:\\$Recycle.Bin");
+                CreatedFileAndFolderInGroupBox("C:\\$Recycle.Bin", files, Grid_Basket);
+            }
+        }
+
+        private void TB_Tree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(Grid_Tree.Children.Count == 0)
+            {
+                TreeView tree = new TreeView();
+                tree.Background = System.Windows.Media.Brushes.Transparent; 
+                ColumnDefinition col = new ColumnDefinition();
+                Grid_Tree.ColumnDefinitions.Add(col);
+                Grid.SetColumn(tree, 0);
+                Grid_Tree.Children.Add(tree);
+
+                drives = Environment.GetLogicalDrives();
+
+                for(int i = 0; i < drives.Length; i++)
+                {
+                    TreeViewItem treeViewItem = new TreeViewItem();
+                    treeViewItem.Header =  "Диск " + drives[i].ToString().Remove(1);
+                    treeViewItem.Name = "dir" + i.ToString();
+                    treeViewItem.Margin = new Thickness(0, 0, 0, 10);
+                    treeViewItem.Foreground = System.Windows.Media.Brushes.WhiteSmoke;
+                    tree.Items.Add(treeViewItem);
+                    treeViewItem.PreviewMouseLeftButtonDown +=  new MouseButtonEventHandler(Show);
+                }
+            }
+        }
+
+        private void Show(object sender, EventArgs e)
+        {
+            TreeViewItem tvItem = (TreeViewItem)sender;
+            string name = ((TreeViewItem)sender).Name;
+
+            if (name.Remove(3) == "dir")
+            {
+                TB_Path.Text = drives[Convert.ToInt32(name.Remove(0, 3))];
+                string[] files = Directory.GetFiles(TB_Path.Text);
+                string[] folder = Directory.GetDirectories(TB_Path.Text);
+                string[] all = folder.Concat(files).ToArray();
+
+                for (int i = 0; i < all.Length; i++)
+                {
+                    TreeViewItem treeView = new TreeViewItem();
+                    treeView.Header = all[i];
+                    treeView.Name = "file" + i;
+                    treeView.Foreground = System.Windows.Media.Brushes.WhiteSmoke;
+                    treeView.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(Show);
+                    tvItem.Items.Add(treeView);
+                    tvItem.IsExpanded = true;
+
+                }
+            }
+            else
+            {
+                TB_Path.Text = tvItem.Header.ToString();
+                if (File.Exists(TB_Path.Text))
+                {
+                    System.Diagnostics.Process.Start(TB_Path.Text);
+                }
+                else
+                {
+                    string[] files = Directory.GetFiles(TB_Path.Text);
+                    string[] folder = Directory.GetDirectories(TB_Path.Text);
+                    string[] all = folder.Concat(files).ToArray();
+
+                    for (int i = 0; i < all.Length; i++)
+                    {
+                        TreeViewItem treeView = new TreeViewItem();
+                        treeView.Header = all[i];
+                        treeView.Name = "file" + i;
+                        treeView.Foreground = System.Windows.Media.Brushes.WhiteSmoke;
+                        treeView.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(Show);
+                        tvItem.Items.Add(treeView);
+                        tvItem.IsExpanded = true;
+
+                    }
+                }
             }
         }
     }
