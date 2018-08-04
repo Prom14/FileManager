@@ -66,7 +66,28 @@
                             <ColumnDefinition Width="0.05*"></ColumnDefinition>
                             <ColumnDefinition Width="0.2*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="BT_Back"  Grid.Row="1" Grid.Column="0" Content="&lt;" MaxHeight="19" Foreground="#FFD1D1D1" BorderThickness="0" Background="#FF141517" BorderBrush="White" ClipToBounds="True" SnapsToDevicePixels="True" Cursor="Hand" Click="BT_Back_Click"/>
+                        <Button x:Name="BT_Back"  Grid.Row="1" Grid.Column="0" Content="&lt;" MaxHeight="19" Foreground="#FFD1D1D1" BorderThickness="0" Background="#FF141517" BorderBrush="White" ClipToBounds="True" SnapsToDevicePixels="True" Cursor="Hand" Click="BT_Back_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="buttonBorder"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                       Background="{TemplateBinding Background}"
+                                       Height="{TemplateBinding Height}"
+                                       Width="{TemplateBinding Width}" >
+                                        <ContentControl Margin="{TemplateBinding Padding}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Content="{TemplateBinding Content}" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsEnabled" Value="false">
+                                            <Setter TargetName="buttonBorder" Property="Background" Value="#FF38393C"></Setter>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
                         <TextBox x:Name="TB_Path" Margin="0 0 0 0" BorderThickness="0" Text="Path" Grid.Row="1" Grid.Column="1" IsReadOnly="True" SelectionBrush="#FF696D7A" Foreground="#FFC7C7C7" Background="#FF222327" BorderBrush="#FF696D7A" VerticalAlignment="Center" FontSize="14"/>
                         <ComboBox x:Name="CB_Sort"  MaxHeight="19" Grid.Row="1" Grid.Column="3" SelectedIndex="0" FontSize="10" SelectionChanged="ComboBox_SelectionChanged">
                             <ListBoxItem Content="Сортировка"/>
@@ -137,7 +158,28 @@
                             <ListBoxItem Content="Только .bsp"/>
                             <ListBoxItem Content="Без расширения"/>
                         </ComboBox>
-                        <Button x:Name="BT_Next" Grid.Row="1" Grid.Column="2" Content="&gt;" MaxHeight="19" Foreground="#FFD1D1D1" BorderThickness="0" Background="#FF141517" Click="BT_Next_Click"></Button>
+                        <Button x:Name="BT_Next" Grid.Row="1" Grid.Column="2" Content="&gt;" MaxHeight="19" Foreground="#FFD1D1D1" BorderThickness="0" Background="#FF141517" Click="BT_Next_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="buttonBorder"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                       Background="{TemplateBinding Background}"
+                                       Height="{TemplateBinding Height}"
+                                       Width="{TemplateBinding Width}" >
+                                        <ContentControl Margin="{TemplateBinding Padding}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Content="{TemplateBinding Content}" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsEnabled" Value="false">
+                                            <Setter TargetName="buttonBorder" Property="Background" Value="#FF38393C"></Setter>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
                     </Grid>
 
                     <TabControl TabStripPlacement="Left" Grid.Row="1" Grid.Column="0" BorderBrush="#FF36393F" Background="#FF36393F" Foreground="#FF36393F">
