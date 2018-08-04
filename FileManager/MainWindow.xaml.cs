@@ -83,6 +83,7 @@ namespace FileManager
                 allFoldersAndFilesInFolder = value;
             }
         }
+        public string Exception { get; set; }
 
         public MainWindow()
         {
@@ -763,8 +764,12 @@ namespace FileManager
                     text = Console.Text.Remove(0,backText.ToCharArray().Length);
                     backText = text;
                 }
+                else if (Exception != null)
+                {
+                    text = Console.Text.Remove(0, Exception.ToCharArray().Length);
+                    backText = text;
+                }
                 else
-
                 {
                     text = Console.Text;
                 }
@@ -804,7 +809,7 @@ namespace FileManager
 
                     app.Shutdown();
                 }
-                else if(command == "createfolder")
+                else if(command == "createfolder" && attr != "")
                 {
                     try
                     {
@@ -822,7 +827,7 @@ namespace FileManager
                         Console.Text += "Создание папки ... прошло неуспешно. Причина: невалидный путь." + "\r\n";
                     }
                 }
-                else if(command == "createfile")
+                else if(command == "createfile" && attr != "")
                 {
                     try
                     {
@@ -840,7 +845,7 @@ namespace FileManager
                         Console.Text += "Создание папки ... прошло неуспешно. Причина: невалидный путь." + "\r\n";
                     }
                 }
-                else if(command == "deletefolder")
+                else if(command == "deletefolder" && attr != "")
                 {
                     try
                     {
@@ -858,7 +863,7 @@ namespace FileManager
                         Console.Text += "Удаление папки ... прошло неуспешно. Причина: папка не была найдена по пути:" + " " + attr + "\r\n";
                     }
                 }
-                else if (command == "deletefile")
+                else if (command == "deletefile" && attr != "")
                 {
                     try
                     {
@@ -922,44 +927,21 @@ namespace FileManager
                     treeViewItem.Margin = new Thickness(0, 0, 0, 10);
                     treeViewItem.Foreground = System.Windows.Media.Brushes.WhiteSmoke;
                     tree.Items.Add(treeViewItem);
-                    treeViewItem.PreviewMouseLeftButtonDown +=  new MouseButtonEventHandler(Show);
+                    treeViewItem.Selected += Show;
                 }
             }
         }
 
-        private void Show(object sender, EventArgs e)
+        private void Show(object sender, RoutedEventArgs e)
         {
             TreeViewItem tvItem = (TreeViewItem)sender;
             string name = ((TreeViewItem)sender).Name;
 
-            if (name.Remove(3) == "dir")
+            if (name.Remove(3) == "dir" && tvItem.Items.Count == 0)
             {
-                TB_Path.Text = drives[Convert.ToInt32(name.Remove(0, 3))];
-                string[] files = Directory.GetFiles(TB_Path.Text);
-                string[] folder = Directory.GetDirectories(TB_Path.Text);
-                string[] all = folder.Concat(files).ToArray();
-
-                for (int i = 0; i < all.Length; i++)
+                try
                 {
-                    TreeViewItem treeView = new TreeViewItem();
-                    treeView.Header = all[i];
-                    treeView.Name = "file" + i;
-                    treeView.Foreground = System.Windows.Media.Brushes.WhiteSmoke;
-                    treeView.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(Show);
-                    tvItem.Items.Add(treeView);
-                    tvItem.IsExpanded = true;
-
-                }
-            }
-            else
-            {
-                TB_Path.Text = tvItem.Header.ToString();
-                if (File.Exists(TB_Path.Text))
-                {
-                    System.Diagnostics.Process.Start(TB_Path.Text);
-                }
-                else
-                {
+                    TB_Path.Text = drives[Convert.ToInt32(name.Remove(0, 3))];
                     string[] files = Directory.GetFiles(TB_Path.Text);
                     string[] folder = Directory.GetDirectories(TB_Path.Text);
                     string[] all = folder.Concat(files).ToArray();
@@ -970,10 +952,65 @@ namespace FileManager
                         treeView.Header = all[i];
                         treeView.Name = "file" + i;
                         treeView.Foreground = System.Windows.Media.Brushes.WhiteSmoke;
-                        treeView.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(Show);
+                        treeView.Selected += Show;
                         tvItem.Items.Add(treeView);
-                        tvItem.IsExpanded = true;
+                        if (tvItem.IsExpanded == false && i == all.Length - 1)
+                        {
+                            tvItem.IsExpanded = true;
+                        }
 
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.Text += "Невозможно получить данные по диску " + " " + TB_Path.Text + "\r\n";
+                    Exception += Console.Text;
+                    Console.SelectionStart = Console.Text.Length;
+                    Console.Focus();
+                }
+            }
+            else
+            {
+                TB_Path.Text = tvItem.Header.ToString();
+                if (File.Exists(TB_Path.Text))
+                {
+                    try
+                    {
+                        System.Diagnostics.Process.Start(TB_Path.Text);
+                    }
+                    catch (Exception)
+                    {
+                        Console.Text += "Невозможно запустить файл -" + " " + TB_Path.Text + "\r\n";
+                        Console.SelectionStart = Console.Text.Length;
+                        Console.Focus();
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        if (tvItem.Items.Count == 0 && name.Remove(3) != "dir")
+                        {
+                            string[] files = Directory.GetFiles(TB_Path.Text);
+                            string[] folder = Directory.GetDirectories(TB_Path.Text);
+                            string[] all = folder.Concat(files).ToArray();
+
+                            for (int i = 0; i < all.Length; i++)
+                            {
+                                TreeViewItem treeView = new TreeViewItem();
+                                treeView.Header = all[i];
+                                treeView.Name = "file" + i;
+                                treeView.Foreground = System.Windows.Media.Brushes.WhiteSmoke;
+                                treeView.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(Show);
+                                tvItem.Items.Add(treeView);
+                                tvItem.IsExpanded = true;
+
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                       
                     }
                 }
             }
